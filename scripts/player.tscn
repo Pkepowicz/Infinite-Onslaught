@@ -1,0 +1,45 @@
+[gd_scene load_steps=7 format=3 uid="uid://ikci0cwvea7n"]
+
+[ext_resource type="Script" path="res://scripts/Player.gd" id="1_ym1d0"]
+[ext_resource type="Texture2D" uid="uid://j4yhfjykaftm" path="res://icon.svg" id="2_p5t2q"]
+[ext_resource type="PackedScene" uid="uid://hhg0e3ylkxlg" path="res://scripts/bullet.tscn" id="2_uq75o"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8b4qh"]
+size = Vector2(134, 131)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_rnois"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_g3wg3"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/sync = true
+properties/0/watch = false
+properties/1/path = NodePath("GunRotation:rotation")
+properties/1/spawn = true
+properties/1/sync = true
+properties/1/watch = false
+
+[node name="Player" type="CharacterBody2D" groups=["Player"]]
+scale = Vector2(0.5, 0.5)
+script = ExtResource("1_ym1d0")
+bullet = ExtResource("2_uq75o")
+
+[node name="PlayerSprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_p5t2q")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, -0.5)
+shape = SubResource("RectangleShape2D_8b4qh")
+
+[node name="GunRotation" type="Node2D" parent="."]
+
+[node name="WeaponSprite" type="Sprite2D" parent="GunRotation"]
+position = Vector2(94, 2.38419e-07)
+scale = Vector2(35.5, 36.5)
+texture = SubResource("PlaceholderTexture2D_rnois")
+
+[node name="BulletSpawn" type="Node2D" parent="GunRotation"]
+position = Vector2(114, 2)
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_g3wg3")
