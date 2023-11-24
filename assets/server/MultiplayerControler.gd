@@ -1,6 +1,6 @@
 extends Control
 
-@export var Address = "127.0.0.1"
+@export var Address = "207.127.90.3"
 @export var Port = 2456
 var peer
 
@@ -10,6 +10,8 @@ func _ready():
 	multiplayer.peer_disconnected.connect(peer_disconnected)
 	multiplayer.connected_to_server.connect(connected_to_server)
 	multiplayer.connection_failed.connect(connection_failed)
+	if "--server" in OS.get_cmdline_args():
+		StartServer()
 
 	
 @rpc("any_peer", "call_local")
@@ -20,7 +22,7 @@ func StartGame():
 	
 func StartServer():
 	var scene = load("res://assets/server/server.tscn").instantiate()
-	get_tree().root.add_child(scene)
+	get_tree().root.add_child.call_deferred(scene)
 	self.hide()
 
 # From server and client

@@ -1,6 +1,6 @@
 extends Control
 
-@export var Address = "127.0.0.1"
+@export var Address = "207.127.90.3"
 @export var Port = 2456
 var peer
 
@@ -28,6 +28,19 @@ func _on_join_button_down():
 		print('Unable to connect')
 		return
 	multiplayer.set_multiplayer_peer(peer)
+	
+@rpc("any_peer")
+func SendPlayerInformation(name, id):
+	if !GameManager.Players.has(id):
+		GameManager.Players[id] = {
+			"name": name,
+			"id": id,
+			"score": 0
+		}
+		
+	if multiplayer.is_server():
+		for i in GameManager.Players:
+			SendPlayerInformation.rpc(GameManager.Players[i].name, i)
 
 func _on_start_game_button_down():
 	StartGame.rpc()

@@ -1,15 +1,12 @@
 extends Node2D
 
-@export var Address = "127.0.0.1"
+@export var Address = "207.127.90.3"
 @export var Port = 2456
-var maxPeers = 5
-var connectedPeers = []
 var peer
 
 func _ready():
 	multiplayer.peer_connected.connect(peer_connected)
 	multiplayer.peer_disconnected.connect(peer_disconnected)
-	#if "--server" in OS.get_cmdline_args():
 	hostGame()
 
 func hostGame():
@@ -30,12 +27,8 @@ func alive():
 		print("I'm still alive!")
 
 func peer_connected(id):
-	if connectedPeers.size() < maxPeers:
-		connectedPeers.append(id)
-		print("Player Connected " + str(id))
-	else:
-		multiplayer.multiplayer_peer.get_peer(id).peer_disconnect()
-		queue_free()
+	print("Player Connected " + str(id))
+
 
 # From server and client
 func peer_disconnected(id):
