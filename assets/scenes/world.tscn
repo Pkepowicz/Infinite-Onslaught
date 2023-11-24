@@ -1,11 +1,11 @@
 [gd_scene load_steps=3 format=3 uid="uid://c5luaplfyu01h"]
 
-[ext_resource type="Script" path="res://SceneManager.gd" id="1_ela2s"]
-[ext_resource type="PackedScene" uid="uid://ikci0cwvea7n" path="res://scripts/player.tscn" id="2_woaau"]
+[ext_resource type="Script" path="res://assets/server/SceneManager.gd" id="1_ela2s"]
+[ext_resource type="PackedScene" uid="uid://ikci0cwvea7n" path="res://assets/player/player.tscn" id="2_it4pk"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_ela2s")
-PlayerScene = ExtResource("2_woaau")
+PlayerScene = ExtResource("2_it4pk")
 
 [node name="SpawnLocation" type="Node2D" parent="."]
 

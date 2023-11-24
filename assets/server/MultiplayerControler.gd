@@ -6,36 +6,36 @@ var peer
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-#	multiplayer.peer_connected.connect(peer_connected)
-#	multiplayer.peer_disconnected.connect(peer_disconnected)
+	multiplayer.peer_connected.connect(peer_connected)
+	multiplayer.peer_disconnected.connect(peer_disconnected)
 	multiplayer.connected_to_server.connect(connected_to_server)
 	multiplayer.connection_failed.connect(connection_failed)
 
 	
 @rpc("any_peer", "call_local")
 func StartGame():
-	var scene = load("res://world.tscn").instantiate()
+	var scene = load("res://assets/scenes/world.tscn").instantiate()
 	get_tree().root.add_child(scene)
 	self.hide()
 	
 func StartServer():
-	var scene = load("res://server.tscn").instantiate()
+	var scene = load("res://assets/server/server.tscn").instantiate()
 	get_tree().root.add_child(scene)
 	self.hide()
 
 # From server and client
-#func peer_connected(id):
-#	print("Player Connected " + str(id))
-#
-## From server and client
-#func peer_disconnected(id):
-#	print("Player Disconnected " + str(id))
-#	GameManager.Players.erase(id)
-#	var Players = get_tree().get_nodes_in_group("Player")
-#	for i in Players:
-#		if i.name == str(id):
-#			i.queue_free()
-	
+func peer_connected(id):
+	print("Player Connected " + str(id))
+
+# From server and client
+func peer_disconnected(id):
+	print("Player Disconnected " + str(id))
+	GameManager.Players.erase(id)
+	var Players = get_tree().get_nodes_in_group("Player")
+	for i in Players:
+		if i.name == str(id):
+			i.queue_free()
+
 # From client
 func connected_to_server():
 	print("Connected to server")
