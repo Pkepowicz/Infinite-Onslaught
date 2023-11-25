@@ -9,17 +9,15 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 @export var bullet : PackedScene
 
-func _ready():
-	$MultiplayerSynchronizer.set_multiplayer_authority(str(name).to_int())
+func _enter_tree():
+	set_multiplayer_authority(str(name).to_int())
 
 func _physics_process(delta):
-	if $MultiplayerSynchronizer.get_multiplayer_authority() != multiplayer.get_unique_id():
+	if not is_multiplayer_authority():
 		return
 	$GunRotation.look_at(get_viewport().get_mouse_position())
 	if Input.is_action_just_pressed("Fire"):
 		Fire.rpc()
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
 	var direction_x = Input.get_axis("ui_left", "ui_right")
 	var direction_y = Input.get_axis("ui_up", "ui_down")
 	if direction_x:

@@ -21,6 +21,8 @@ properties/1/watch = false
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 scale = Vector2(0.5, 0.5)
+collision_layer = 0
+collision_mask = 0
 script = ExtResource("1_sjxtg")
 bullet = ExtResource("2_3wu67")
 
