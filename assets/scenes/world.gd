@@ -21,6 +21,7 @@ func host_server():
 	print("Waiting for players!")
 
 func _on_join_button_button_down():
+	print("Trying to connect")
 	main_menu.hide()
 	
 	enet_peer.create_client(address_entry.text, PORT)
@@ -33,6 +34,7 @@ func add_player(peer_id):
 	add_child(player)
 
 func remove_player(peer_id):
+	print("Disconnected: " + str(peer_id) )
 	var player = get_node_or_null(str(peer_id))
 	if player:
 		player.queue_free()
