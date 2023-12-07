@@ -20,8 +20,8 @@ Czy gra będzie płatna?|Nie, będzie całkowicie darmowa| -
 
 # Założenia gry
 ## Grafika
- Gra 2D typu top down z minimalistyczną grafiką. Przykład:![[img1.png]]
- [Long Tail](https://rkamil.itch.io/long-tail)![[img2.png]]
+ Gra 2D typu top down z minimalistyczną grafiką. Przykład:![img](img1.png)
+ [Long Tail](https://rkamil.itch.io/long-tail)![img](img2.png)
  [ICE](https://play.google.com/store/apps/details?id=com.queader.ice&hl=en&pli=1)
  
 ## Rozgrywka
