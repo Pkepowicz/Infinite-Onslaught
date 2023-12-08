@@ -29,7 +29,7 @@ Czy gra będzie płatna?|Nie, będzie całkowicie darmowa| -
 ## Rywalizacja
  Gracze rywalizują w meczach trwających około 5 minut. Zwycięzcą danej rundy zostaje gracz który zdobył najwięcej eliminacji. Po zakończeniu meczu jest krótka przerwa z podsumowaniem i automatycznie rozpoczyna się nowa gra.
 # Projekt architektury opracowanego systemu
-![[img3.png]]
+![img](img3.png)
 Założeniem jest udostępnienie użytkownikowi płynnej rozgrywki w oknie przeglądarki bez potrzeby instalacji nowych plików. Będzie musiał wejść pod odpowiedni adres URL, wtedy jego przeglądarka załaduje aplikacje która pozwoli z odpowiedniego interfejsu graficznego połączyć się z serwerami na których będzie toczyć się rywalizacja.
 
 # Sugerowane rozwiązania
