@@ -39,3 +39,5 @@ Założeniem jest udostępnienie użytkownikowi płynnej rozgrywki w oknie przeg
  Uzasadnienie: Do hostingu aplikacji klienta wystarczy udostępnienie statycznej strony, dlatego Github pages jest darmowym i prostym rozwiązaniem. Dodatkowo udostępnienie projektu w serwisie gdzie gromadzą się fani gier indie takim jak itch.io pozwoli na zdobycie większej popularności i zgromadzenie większego feedbacku.
 ### Chmura: Oracle cloud
  Uzasadnienie: Wszyscy członkowie zespołu są zaznajomieni z chmurą Oracle która oferuje wszystkie opcje potrzebne do zrealizowania projektu za darmo.
+### Diagram Sekwencji
+![img](img4.png)
