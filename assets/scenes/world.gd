@@ -33,7 +33,7 @@ func _on_join_button_button_down():
 	if error != OK && error != ERR_ALREADY_IN_USE:
 		connection_error(error_string(error))
 	else:
-		for i in range(20):
+		for i in range(13):
 			is_connected = is_connection_estabilished(peer)
 			if is_connected:
 				break

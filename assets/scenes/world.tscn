@@ -97,10 +97,6 @@ text = "Host"
 layout_mode = 2
 text = "Join"
 
-[node name="Timer" type="Timer" parent="MainMenu/MainMenu/MarginContainer/VBoxContainer/JoinButton"]
-wait_time = 0.25
-one_shot = true
-
 [node name="AddressEntry" type="LineEdit" parent="MainMenu/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
 placeholder_text = "Ip address"
@@ -109,6 +105,7 @@ alignment = 1
 [node name="ErrorMessage" type="Label" parent="MainMenu/MainMenu/MarginContainer/VBoxContainer"]
 visible = false
 layout_mode = 2
+horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
