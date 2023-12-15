@@ -1,13 +1,58 @@
-[gd_scene load_steps=2 format=3 uid="uid://cmneeqglrbfky"]
+[gd_scene load_steps=7 format=3 uid="uid://cmneeqglrbfky"]
 
 [ext_resource type="Script" path="res://assets/scenes/world.gd" id="1_e253m"]
+[ext_resource type="Shader" path="res://assets/Client/background.gdshader" id="2_5jmin"]
+[ext_resource type="Texture2D" uid="uid://cprcicf4r003o" path="res://assets/Client/loadingCircle/circle.png" id="2_ugrpp"]
+[ext_resource type="Script" path="res://assets/Client/loadingCircle/TextureProgressBar.gd" id="3_wr7ma"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g5avr"]
+shader = ExtResource("2_5jmin")
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_c48bm"]
 
 [node name="world" type="Node2D"]
 script = ExtResource("1_e253m")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="MainMenu" type="CanvasLayer" parent="."]
 
-[node name="MainMenu" type="PanelContainer" parent="CanvasLayer"]
+[node name="Loading" type="PanelContainer" parent="MainMenu"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -75.0
+offset_top = -75.0
+offset_right = 75.0
+offset_bottom = 75.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MainMenu/Loading"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainMenu/Loading/MarginContainer"]
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 2
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="Label" type="Label" parent="MainMenu/Loading/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Loading..."
+horizontal_alignment = 1
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="MainMenu/Loading/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+value = 100.0
+fill_mode = 4
+texture_progress = ExtResource("2_ugrpp")
+radial_fill_degrees = 60.0
+script = ExtResource("3_wr7ma")
+
+[node name="MainMenu" type="PanelContainer" parent="MainMenu"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -18,38 +63,48 @@ offset_bottom = -240.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MainMenu"]
+[node name="MarginContainer" type="MarginContainer" parent="MainMenu/MainMenu"]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MainMenu/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainMenu/MainMenu/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 15
 
-[node name="Label" type="Label" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MainMenu/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Main Menu"
 horizontal_alignment = 1
 
-[node name="HostButton" type="Button" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
+[node name="HostButton" type="Button" parent="MainMenu/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Host"
 
-[node name="JoinButton" type="Button" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
+[node name="JoinButton" type="Button" parent="MainMenu/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Join"
 
-[node name="AddressEntry" type="LineEdit" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
+[node name="AddressEntry" type="LineEdit" parent="MainMenu/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
 placeholder_text = "Ip address"
 alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="MainMenu"]
+z_index = -1
+material = SubResource("ShaderMaterial_g5avr")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("PlaceholderTexture2D_c48bm")
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("res://assets/player/player.tscn")
 spawn_path = NodePath("..")
 
-[connection signal="button_down" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_button_down"]
-[connection signal="button_down" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/JoinButton" to="." method="_on_join_button_button_down"]
+[connection signal="button_down" from="MainMenu/MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_button_down"]
+[connection signal="button_down" from="MainMenu/MainMenu/MarginContainer/VBoxContainer/JoinButton" to="." method="_on_join_button_button_down"]
