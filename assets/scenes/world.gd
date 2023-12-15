@@ -1,31 +1,60 @@
 extends Node2D
 
-@onready var main_menu = $CanvasLayer/MainMenu
-@onready var address_entry = $CanvasLayer/MainMenu/MarginContainer/VBoxContainer/AddressEntry
+@onready var address_entry = $MainMenu/MainMenu/MarginContainer/VBoxContainer/AddressEntry
 
 const Player = preload("res://assets/player/player.tscn")
 const PORT = 2456
-var enet_peer = ENetMultiplayerPeer.new()
+var peer = WebSocketMultiplayerPeer.new()
 
 func _ready():
 	if '--server' in OS.get_cmdline_args():
 		host_server()
 
+func _process(delta):
+	multiplayer.multiplayer_peer.poll()
+
 func host_server():
-	main_menu.hide()
+	$MainMenu.hide()
 	
-	enet_peer.create_server(PORT)
-	multiplayer.multiplayer_peer = enet_peer
+	peer.create_server(PORT)
+	multiplayer.multiplayer_peer = peer
 	multiplayer.peer_connected.connect(add_player)
 	multiplayer.peer_disconnected.connect(remove_player)
 	print("Waiting for players!")
 
 func _on_join_button_button_down():
 	print("Trying to connect")
-	main_menu.hide()
+	$MainMenu/MainMenu.hide()
+	$MainMenu/Loading.show()
 	
-	enet_peer.create_client(address_entry.text, PORT)
-	multiplayer.multiplayer_peer = enet_peer
+	var is_connected = false
+	var error = peer.create_client(address_entry.text + ":" + str(PORT))
+	multiplayer.multiplayer_peer = peer
+	if error != OK && error != ERR_ALREADY_IN_USE:
+		connection_error(error_string(error))
+	else:
+		for i in range(20):
+			is_connected = is_connection_estabilished(peer)
+			if is_connected:
+				break
+			await get_tree().create_timer(0.25).timeout
+		if is_connected:
+			multiplayer.multiplayer_peer = peer
+			$MainMenu.hide()
+		else:
+			connection_error("Connection timed out")
+	
+func is_connection_estabilished(peer : WebSocketMultiplayerPeer):
+	print(peer.get_connection_status())
+	if peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED:
+		return true
+	return false
+
+func connection_error(error : String):
+	$MainMenu/MainMenu/MarginContainer/VBoxContainer/ErrorMessage.text = error
+	$MainMenu/MainMenu/MarginContainer/VBoxContainer/ErrorMessage.show()
+	$MainMenu/Loading.hide()
+	$MainMenu/MainMenu.show()
 
 func add_player(peer_id):
 	print("Connected: " + str(peer_id) )
