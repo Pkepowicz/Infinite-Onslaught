@@ -78,14 +78,14 @@ script = ExtResource("3_q8mmu")
 position = Vector2(571, 6)
 amount = 100
 process_material = SubResource("ParticleProcessMaterial_53kfw")
-lifetime = 10.0
+lifetime = 9.0
 local_coords = true
 
 [node name="GPUParticles2D2" type="GPUParticles2D" parent="MainMenu/TextureRect"]
-position = Vector2(1142, 12)
+position = Vector2(571, 3)
 amount = 100
 process_material = SubResource("ParticleProcessMaterial_5mr8v")
-lifetime = 10.0
+lifetime = 9.0
 local_coords = true
 
 [node name="Loading" type="PanelContainer" parent="MainMenu"]
@@ -159,6 +159,11 @@ text = "Host"
 [node name="JoinButton" type="Button" parent="MainMenu/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Join"
+
+[node name="NameEntry" type="LineEdit" parent="MainMenu/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "Name"
+alignment = 1
 
 [node name="AddressEntry" type="LineEdit" parent="MainMenu/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
