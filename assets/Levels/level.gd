@@ -7,14 +7,16 @@ extends Node2D
 
 func spawn_player(player_to_spawn)-> void:
 	for point in spawn_points:
+		print("Checking point: ", point)
 		if point.can_spawn_here():
-			player_to_spawn.position = point.position
-			add_child(player_to_spawn)
+			player_to_spawn.position = point.global_position
+			get_parent().add_child(player_to_spawn)
+			return
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	print(spawn_points.size())
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

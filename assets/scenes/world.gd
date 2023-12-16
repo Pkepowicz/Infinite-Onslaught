@@ -67,7 +67,7 @@ func add_player(peer_id):
 	var player = Player.instantiate()
 	player.name = str(peer_id)
 	level.spawn_player(player)
-	#add_child(player)
+	#level.add_child(player)
 
 func remove_player(peer_id):
 	print("Disconnected: " + str(peer_id) )
