@@ -24,6 +24,9 @@ func take_damage(dmg: Damage):
 	var knockback: Vector2 = (position - dmg.knockback_origin).normalized() * dmg.knockback_force
 	if knockback != Vector2.ZERO:
 		get_knocked_back.emit(knockback)
+	if(hp <= 0):
+		print("player died")
+		return
 	
 	update_color()
 
