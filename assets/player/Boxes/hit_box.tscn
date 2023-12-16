@@ -7,5 +7,7 @@ script = ExtResource("1_lyxo3")
 colors = Array[Color]([Color(0.0509804, 0.698039, 0.00392157, 1), Color(0.890196, 0.917647, 0.054902, 1), Color(0.917647, 0.470588, 0.054902, 1), Color(0.917647, 0.0980392, 0.054902, 1)])
 
 [node name="Area2D" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]

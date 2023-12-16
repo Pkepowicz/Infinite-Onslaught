@@ -65,6 +65,7 @@ replication_config = SubResource("SceneReplicationConfig_g3wg3")
 [node name="CollisionShape2D" parent="HitBox/Area2D" index="0"]
 shape = SubResource("CircleShape2D_6xo8u")
 
+[connection signal="get_knocked_back" from="HitBox" to="." method="_on_hit_box_get_knocked_back"]
 [connection signal="update_color_signal" from="HitBox" to="." method="_on_hit_box_update_color_signal"]
 
 [editable path="HitBox"]

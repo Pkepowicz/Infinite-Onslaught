@@ -36,6 +36,7 @@ func _physics_process(delta):
 @rpc("any_peer", "call_local")
 func Fire():
 	var b = bullet.instantiate()
+	b.parent = self
 	b.global_position = $GunRotation/BulletSpawn.global_position
 	b.rotation_degrees = $GunRotation.rotation_degrees
 	get_tree().root.add_child(b)
@@ -46,3 +47,9 @@ func _on_hit_box_update_color_signal(clr):
 	var outer: Sprite2D = $Graphics/Outer
 	inner.modulate = clr
 	outer.modulate = clr
+	
+	
+
+
+func _on_hit_box_get_knocked_back(dir: Vector2) -> void:
+	velocity += dir
