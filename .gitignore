@@ -1,7 +1,7 @@
 # Godot 4+ specific ignores
 .godot/
 *.tmp
-*.import
+DIW/*.import
 
 # Godot-specific ignores
 .import/
