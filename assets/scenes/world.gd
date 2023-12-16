@@ -1,10 +1,14 @@
 extends Node2D
 
 @onready var address_entry = $MainMenu/MainMenu/MarginContainer/VBoxContainer/AddressEntry
+@onready var level = $Level
+
 
 const Player = preload("res://assets/player/player.tscn")
 const PORT = 2456
 var peer = WebSocketMultiplayerPeer.new()
+
+
 
 func _ready():
 	if '--server' in OS.get_cmdline_args():
@@ -15,6 +19,7 @@ func _process(delta):
 
 func host_server():
 	$MainMenu.hide()
+	level.show()
 	
 	peer.create_server(PORT)
 	multiplayer.multiplayer_peer = peer
@@ -41,6 +46,7 @@ func _on_join_button_button_down():
 		if is_connected:
 			multiplayer.multiplayer_peer = peer
 			$MainMenu.hide()
+			level.show()
 		else:
 			connection_error("Connection timed out")
 	
@@ -60,7 +66,8 @@ func add_player(peer_id):
 	print("Connected: " + str(peer_id) )
 	var player = Player.instantiate()
 	player.name = str(peer_id)
-	add_child(player)
+	level.spawn_player(player)
+	#add_child(player)
 
 func remove_player(peer_id):
 	print("Disconnected: " + str(peer_id) )
