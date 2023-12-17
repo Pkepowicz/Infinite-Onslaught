@@ -99,3 +99,4 @@ func _on_host_button_button_down():
 		"username" = "host"
 	}
 	add_player(multiplayer.get_unique_id())
+	update_player_labels()
