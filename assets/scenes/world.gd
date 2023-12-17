@@ -69,6 +69,7 @@ func remove_player(peer_id):
 	var player = get_node_or_null(str(peer_id))
 	if player:
 		player.queue_free()
+	player_info.erase(peer_id)
 
 func on_player_connected():
 	var username = $MainMenu/MainMenu/MarginContainer/VBoxContainer/NameEntry.text

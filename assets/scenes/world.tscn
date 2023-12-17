@@ -11,7 +11,7 @@ interpolation_mode = 2
 offsets = PackedFloat32Array(0.377049, 0.868852)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_k3qyc"]
-noise_type = 0
+noise_type = 2
 frequency = 0.0211
 fractal_lacunarity = 0.0
 fractal_ping_pong_strength = 4.0
