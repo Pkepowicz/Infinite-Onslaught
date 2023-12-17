@@ -6,17 +6,23 @@ const JUMP_VELOCITY = -400.0
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+var username : String
 
 @export var bullet : PackedScene
 
 func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())
-
+	
+func update_label():
+	username = get_parent().player_info[str(name).to_int()].username
+	$Username.text = username
+	
 func _physics_process(delta):
 	if not is_multiplayer_authority():
 		return
 	$GunRotation.look_at(get_viewport().get_mouse_position())
 	if Input.is_action_just_pressed("Fire"):
+		print(username)
 		Fire.rpc()
 	var direction_x = Input.get_axis("ui_left", "ui_right")
 	var direction_y = Input.get_axis("ui_up", "ui_down")
