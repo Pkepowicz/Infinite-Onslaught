@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cmneeqglrbfky"]
+[gd_scene load_steps=17 format=3 uid="uid://cmneeqglrbfky"]
 
 [ext_resource type="Script" path="res://assets/scenes/world.gd" id="1_e253m"]
 [ext_resource type="Shader" path="res://assets/Client/background.gdshader" id="2_5jmin"]
@@ -6,8 +6,26 @@
 [ext_resource type="Script" path="res://assets/Client/Particles.gd" id="3_q8mmu"]
 [ext_resource type="Script" path="res://assets/Client/loadingCircle/TextureProgressBar.gd" id="3_wr7ma"]
 
+[sub_resource type="Gradient" id="Gradient_2uts8"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.377049, 0.868852)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_k3qyc"]
+noise_type = 0
+frequency = 0.0211
+fractal_lacunarity = 0.0
+fractal_ping_pong_strength = 4.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_qo8v1"]
+seamless = true
+seamless_blend_skirt = 0.647
+bump_strength = 5.7
+color_ramp = SubResource("Gradient_2uts8")
+noise = SubResource("FastNoiseLite_k3qyc")
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_g5avr"]
 shader = ExtResource("2_5jmin")
+shader_parameter/noise = SubResource("NoiseTexture2D_qo8v1")
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_c48bm"]
 
@@ -26,16 +44,14 @@ curve = SubResource("Curve_o2aup")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_53kfw"]
 lifetime_randomness = 0.26
+particle_flag_disable_z = true
 emission_shape = 3
 emission_box_extents = Vector3(1, 1, 1)
-particle_flag_disable_z = true
 spread = 180.0
-gravity = Vector3(0, 50, 0)
 initial_velocity_max = 35.0
 angular_velocity_min = -15.0
 angular_velocity_max = 15.0
-orbit_velocity_min = 0.0
-orbit_velocity_max = 0.0
+gravity = Vector3(0, 50, 0)
 scale_max = 10.0
 scale_curve = SubResource("CurveTexture_0gkpd")
 color = Color(0.141176, 0.92549, 0.231373, 1)
@@ -43,16 +59,14 @@ color_ramp = SubResource("GradientTexture1D_xyp1b")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5mr8v"]
 lifetime_randomness = 0.26
+particle_flag_disable_z = true
 emission_shape = 3
 emission_box_extents = Vector3(1, 1, 1)
-particle_flag_disable_z = true
 spread = 180.0
-gravity = Vector3(0, 50, 0)
 initial_velocity_max = 35.0
 angular_velocity_min = -15.0
 angular_velocity_max = 15.0
-orbit_velocity_min = 0.0
-orbit_velocity_max = 0.0
+gravity = Vector3(0, 50, 0)
 scale_max = 10.0
 scale_curve = SubResource("CurveTexture_0gkpd")
 color = Color(0.945098, 0.172549, 0.164706, 1)
@@ -71,6 +85,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 texture = SubResource("PlaceholderTexture2D_c48bm")
 script = ExtResource("3_q8mmu")
 
