@@ -52,4 +52,4 @@ func _on_hit_box_update_color_signal(clr):
 
 
 func _on_hit_box_get_knocked_back(dir: Vector2) -> void:
-	velocity += dir
+	velocity += dir * -2000
