@@ -11,8 +11,8 @@ shader = ExtResource("2_i5ggl")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l3bwk"]
 size = Vector2(24, 6)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_mr7o4"]
-size = Vector2(113, 39)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1h540"]
+size = Vector2(24, 6)
 
 [node name="Bullet" type="CharacterBody2D"]
 script = ExtResource("1_lj8tb")
@@ -27,12 +27,10 @@ texture = ExtResource("2_56jn8")
 shape = SubResource("RectangleShape2D_l3bwk")
 
 [node name="DamageBox" parent="." instance=ExtResource("3_aubgo")]
-visible = false
 damage = 1
 knockback_force = 1.0
 
 [node name="CollisionShape2D" parent="DamageBox/Area2D" index="0"]
-position = Vector2(53.5, 0.5)
-shape = SubResource("RectangleShape2D_mr7o4")
+shape = SubResource("RectangleShape2D_1h540")
 
 [editable path="DamageBox"]
