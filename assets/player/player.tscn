@@ -6,11 +6,10 @@
 [ext_resource type="Texture2D" uid="uid://c4two7ckobbve" path="res://assets/icon.svg" id="3_uey2i"]
 [ext_resource type="Texture2D" uid="uid://cprcicf4r003o" path="res://assets/Client/loadingCircle/circle.png" id="4_1hs0d"]
 [ext_resource type="PackedScene" uid="uid://bjruntkvkehbs" path="res://assets/player/Boxes/hit_box.tscn" id="4_661v0"]
+[ext_resource type="Texture2D" uid="uid://bab8ah7e10iwa" path="res://assets/Client/shapes/arrow.png" id="6_jjgt6"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_o8n4j"]
 radius = 127.825
-
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_rnois"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_g3wg3"]
 properties/0/path = NodePath(".:position")
@@ -50,9 +49,10 @@ shape = SubResource("CircleShape2D_o8n4j")
 [node name="GunRotation" type="Node2D" parent="."]
 
 [node name="WeaponSprite" type="Sprite2D" parent="GunRotation"]
-position = Vector2(94, 2.38419e-07)
-scale = Vector2(35.5, 36.5)
-texture = SubResource("PlaceholderTexture2D_rnois")
+position = Vector2(92, 0)
+rotation = 1.5708
+scale = Vector2(0.515, 0.511335)
+texture = ExtResource("6_jjgt6")
 
 [node name="BulletSpawn" type="Node2D" parent="GunRotation"]
 position = Vector2(114, 2)
