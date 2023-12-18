@@ -1,11 +1,15 @@
-[gd_scene load_steps=6 format=3 uid="uid://hhg0e3ylkxlg"]
+[gd_scene load_steps=8 format=3 uid="uid://hhg0e3ylkxlg"]
 
 [ext_resource type="Script" path="res://assets/player/weapons/Bullet.gd" id="1_lj8tb"]
-[ext_resource type="Texture2D" uid="uid://c4two7ckobbve" path="res://assets/icon.svg" id="1_yinac"]
+[ext_resource type="Texture2D" uid="uid://5crkek28f6sl" path="res://assets/Client/shapes/square.png" id="2_56jn8"]
+[ext_resource type="Shader" path="res://assets/player/weapons/bullet.gdshader" id="2_i5ggl"]
 [ext_resource type="PackedScene" uid="uid://dpvmpqh03hwom" path="res://assets/player/Boxes/damage_box.tscn" id="3_aubgo"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fqvlh"]
+shader = ExtResource("2_i5ggl")
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l3bwk"]
-size = Vector2(109, 34)
+size = Vector2(24, 6)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mr7o4"]
 size = Vector2(113, 39)
@@ -14,12 +18,12 @@ size = Vector2(113, 39)
 script = ExtResource("1_lj8tb")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(55, 0)
-scale = Vector2(0.84375, 0.257813)
-texture = ExtResource("1_yinac")
+material = SubResource("ShaderMaterial_fqvlh")
+position = Vector2(-4.76837e-07, -2.38419e-07)
+scale = Vector2(0.26, -0.085)
+texture = ExtResource("2_56jn8")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(54.5, 0)
 shape = SubResource("RectangleShape2D_l3bwk")
 
 [node name="DamageBox" parent="." instance=ExtResource("3_aubgo")]
