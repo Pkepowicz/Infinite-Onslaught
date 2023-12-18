@@ -5,13 +5,11 @@ extends Node2D
 ## to spawn new player on this spawn point
 @export var min_spawn_separation_distance: float
 
-func spawn_player(player_to_spawn)-> void:
+func get_spawn():
 	for point in spawn_points:
 		print("Checking point: ", point)
 		if point.can_spawn_here():
-			player_to_spawn.position = point.global_position
-			get_parent().add_child(player_to_spawn)
-			return
+			return point.global_position
 
 
 # Called when the node enters the scene tree for the first time.

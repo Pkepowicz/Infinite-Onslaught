@@ -68,7 +68,10 @@ func add_player(peer_id):
 	print("Connected: " + str(peer_id) )
 	var player = Player.instantiate()
 	player.name = str(peer_id)
-	level.spawn_player(player)
+	var pos = level.get_spawn()
+	player.global_position = pos
+	add_child(player)
+	sync_player_position.rpc_id(peer_id, pos)
 	#level.add_child(player)
 
 func remove_player(peer_id):
@@ -94,6 +97,11 @@ func sync_player_info(username, id):
 		for i in player_info:
 			sync_player_info.rpc(player_info[i].username, i)
 		update_player_labels.rpc()
+
+@rpc("authority", "call_local")
+func sync_player_position(pos):
+	var player = get_node_or_null(str(multiplayer.get_unique_id()))
+	player.position = pos
 
 @rpc("authority", "call_local", "reliable")
 func update_player_labels():
