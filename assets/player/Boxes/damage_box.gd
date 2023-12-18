@@ -11,7 +11,7 @@ func set_parent(nd: Node):
 func deal_damage(area: Area2D) -> void:
 	var dmg: Damage = Damage.new()
 	dmg.dmg = damage
-	dmg.knockback_origin = get_parent().position
+	dmg.knockback_origin = get_parent().global_position
 	dmg.knockback_force = knockback_force
 	
 	area.get_parent().take_damage(dmg)

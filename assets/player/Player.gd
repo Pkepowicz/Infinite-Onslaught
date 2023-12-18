@@ -47,9 +47,6 @@ func _on_hit_box_update_color_signal(clr):
 	var outer: Sprite2D = $Graphics/Outer
 	inner.modulate = clr
 	outer.modulate = clr
-	
-	
-
 
 func _on_hit_box_get_knocked_back(dir: Vector2) -> void:
-	velocity += dir * -2000
+	velocity += dir * 2000
