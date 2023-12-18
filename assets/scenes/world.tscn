@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cmneeqglrbfky"]
+[gd_scene load_steps=18 format=3 uid="uid://cmneeqglrbfky"]
 
 [ext_resource type="Script" path="res://assets/scenes/world.gd" id="1_e253m"]
 [ext_resource type="Shader" path="res://assets/Client/background.gdshader" id="2_5jmin"]

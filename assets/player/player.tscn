@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://ikci0cwvea7n"]
+[gd_scene load_steps=12 format=3 uid="uid://ikci0cwvea7n"]
 
 [ext_resource type="Script" path="res://assets/player/Player.gd" id="1_sjxtg"]
 [ext_resource type="PackedScene" uid="uid://hhg0e3ylkxlg" path="res://assets/player/weapons/bullet.tscn" id="2_3wu67"]
@@ -12,16 +12,12 @@
 radius = 127.825
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_g3wg3"]
-properties/0/path = NodePath(".:position")
+properties/0/path = NodePath(".:sync_pos")
 properties/0/spawn = true
 properties/0/replication_mode = 1
-properties/1/path = NodePath("GunRotation:rotation")
+properties/1/path = NodePath(".:sync_rot")
 properties/1/spawn = true
 properties/1/replication_mode = 1
-properties/1/replication_mode = 1
-properties/2/path = NodePath(".:username")
-properties/2/spawn = false
-properties/2/replication_mode = 0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6xo8u"]
 radius = 108.167
@@ -66,17 +62,13 @@ texture = ExtResource("6_jjgt6")
 position = Vector2(114, 2)
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_interval = 0.05
 replication_config = SubResource("SceneReplicationConfig_g3wg3")
 
 [node name="HitBox" parent="." instance=ExtResource("4_661v0")]
 
 [node name="CollisionShape2D" parent="HitBox/Area2D" index="0"]
 shape = SubResource("CircleShape2D_6xo8u")
-
-[connection signal="get_knocked_back" from="HitBox" to="." method="_on_hit_box_get_knocked_back"]
-[connection signal="update_color_signal" from="HitBox" to="." method="_on_hit_box_update_color_signal"]
-
-[editable path="HitBox"]
 
 [node name="Username" type="Label" parent="."]
 anchors_preset = 8
@@ -93,3 +85,8 @@ grow_vertical = 2
 label_settings = SubResource("LabelSettings_wqpfd")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[connection signal="get_knocked_back" from="HitBox" to="." method="_on_hit_box_get_knocked_back"]
+[connection signal="update_color_signal" from="HitBox" to="." method="_on_hit_box_update_color_signal"]
+
+[editable path="HitBox"]
