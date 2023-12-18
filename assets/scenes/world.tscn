@@ -1,10 +1,11 @@
-[gd_scene load_steps=17 format=3 uid="uid://cmneeqglrbfky"]
+[gd_scene load_steps=15 format=3 uid="uid://cmneeqglrbfky"]
 
 [ext_resource type="Script" path="res://assets/scenes/world.gd" id="1_e253m"]
 [ext_resource type="Shader" path="res://assets/Client/background.gdshader" id="2_5jmin"]
 [ext_resource type="Texture2D" uid="uid://cprcicf4r003o" path="res://assets/Client/loadingCircle/circle.png" id="2_ugrpp"]
 [ext_resource type="Script" path="res://assets/Client/Particles.gd" id="3_q8mmu"]
 [ext_resource type="Script" path="res://assets/Client/loadingCircle/TextureProgressBar.gd" id="3_wr7ma"]
+[ext_resource type="PackedScene" uid="uid://bk1g078p7iohx" path="res://assets/Levels/level1.tscn" id="6_p7gqs"]
 
 [sub_resource type="Gradient" id="Gradient_2uts8"]
 interpolation_mode = 2
@@ -195,5 +196,10 @@ autowrap_mode = 3
 _spawnable_scenes = PackedStringArray("res://assets/player/player.tscn")
 spawn_path = NodePath("..")
 
+[node name="Level" parent="." instance=ExtResource("6_p7gqs")]
+visible = false
+
 [connection signal="button_down" from="MainMenu/MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_button_down"]
 [connection signal="button_down" from="MainMenu/MainMenu/MarginContainer/VBoxContainer/JoinButton" to="." method="_on_join_button_button_down"]
+
+[editable path="Level"]
