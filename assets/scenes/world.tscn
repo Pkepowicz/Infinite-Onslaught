@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cmneeqglrbfky"]
+[gd_scene load_steps=18 format=3 uid="uid://cmneeqglrbfky"]
 
 [ext_resource type="Script" path="res://assets/scenes/world.gd" id="1_e253m"]
 [ext_resource type="Shader" path="res://assets/Client/background.gdshader" id="2_5jmin"]
@@ -7,8 +7,26 @@
 [ext_resource type="Script" path="res://assets/Client/loadingCircle/TextureProgressBar.gd" id="3_wr7ma"]
 [ext_resource type="PackedScene" uid="uid://bk1g078p7iohx" path="res://assets/Levels/level1.tscn" id="6_p7gqs"]
 
+[sub_resource type="Gradient" id="Gradient_2uts8"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.377049, 0.868852)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_k3qyc"]
+noise_type = 2
+frequency = 0.0211
+fractal_lacunarity = 0.0
+fractal_ping_pong_strength = 4.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_qo8v1"]
+seamless = true
+seamless_blend_skirt = 0.647
+bump_strength = 5.7
+color_ramp = SubResource("Gradient_2uts8")
+noise = SubResource("FastNoiseLite_k3qyc")
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_g5avr"]
 shader = ExtResource("2_5jmin")
+shader_parameter/noise = SubResource("NoiseTexture2D_qo8v1")
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_c48bm"]
 
@@ -68,6 +86,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 texture = SubResource("PlaceholderTexture2D_c48bm")
 script = ExtResource("3_q8mmu")
 
