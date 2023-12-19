@@ -1,10 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://hhg0e3ylkxlg"]
+[gd_scene load_steps=6 format=3 uid="uid://hhg0e3ylkxlg"]
 
 [ext_resource type="Script" path="res://assets/player/weapons/Bullet.gd" id="1_lj8tb"]
-[ext_resource type="Texture2D" uid="uid://j4yhfjykaftm" path="res://assets/icon.svg" id="1_yinac"]
+[ext_resource type="Texture2D" uid="uid://c4two7ckobbve" path="res://assets/icon.svg" id="1_yinac"]
+[ext_resource type="PackedScene" uid="uid://dpvmpqh03hwom" path="res://assets/player/Boxes/damage_box.tscn" id="3_aubgo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l3bwk"]
 size = Vector2(109, 34)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mr7o4"]
+size = Vector2(113, 39)
 
 [node name="Bullet" type="CharacterBody2D"]
 script = ExtResource("1_lj8tb")
@@ -17,3 +21,14 @@ texture = ExtResource("1_yinac")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(54.5, 0)
 shape = SubResource("RectangleShape2D_l3bwk")
+
+[node name="DamageBox" parent="." instance=ExtResource("3_aubgo")]
+visible = false
+damage = 1
+knockback_force = 1.0
+
+[node name="CollisionShape2D" parent="DamageBox/Area2D" index="0"]
+position = Vector2(53.5, 0.5)
+shape = SubResource("RectangleShape2D_mr7o4")
+
+[editable path="DamageBox"]
