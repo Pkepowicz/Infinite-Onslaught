@@ -109,7 +109,8 @@ func sync_player_info(username, id):
 @rpc("authority", "call_local")
 func sync_player_position(pos):
 	var player = get_node_or_null(str(multiplayer.get_unique_id()))
-	player.position = pos
+	if player:
+		player.position = pos
 
 # Function used by server to notify client to update player's labels
 @rpc("authority", "call_local", "reliable")
@@ -127,10 +128,11 @@ func create_player(peer_id):
 	add_child(player)
 	sync_player_position.rpc_id(peer_id, pos)
 
-#@rpc("any_peer", "call_local")
-#func respawn_player():
-	#get_tree().create_timer(5).timeout
-	#create_player(multiplayer.get_remote_sender_id())
+@rpc("any_peer", "call_local")
+func respawn_player(peer_id):
+	await get_tree().create_timer(5).timeout
+	create_player(peer_id)
+	update_player_labels.rpc()
 	
 # Hosting server locally, mainly for debug purpose
 func _on_host_button_button_down():

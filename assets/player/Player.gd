@@ -66,4 +66,5 @@ func _on_hit_box_get_knocked_back(dir: Vector2) -> void:
 
 func _on_hit_box_player_death():
 	queue_free()
-	get_parent().respawn_player.rpc_id(1)
+	if is_multiplayer_authority():
+		get_parent().respawn_player.rpc_id(1, multiplayer.get_unique_id())
