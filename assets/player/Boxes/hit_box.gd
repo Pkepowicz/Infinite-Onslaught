@@ -2,7 +2,7 @@ extends Node2D
 
 @export var colors: Array[Color]
 @export var max_hp: int = 5
-var invunurable = false
+@onready var collision = $Area2D/CollisionShape2D
 
 var hp: int
 var parent: Node
@@ -23,14 +23,11 @@ func _ready():
 	parent = get_parent()
 	update_color()
 
-func take_damage(dmg: Damage):
-	if invunurable:
-		return
-	
+func take_damage(dmg: Damage):	
 	hp -= dmg.dmg
 	var knockback: Vector2 = (global_position - dmg.knockback_origin).normalized() * dmg.knockback_force
 	
-	invunurable = true
+	collision.call_deferred("set", "disabled", true)
 	$Timer.start()
 	
 	if knockback != Vector2.ZERO:
@@ -42,4 +39,4 @@ func take_damage(dmg: Damage):
 	update_color()
 
 func _on_timer_timeout() -> void:
-	invunurable = false
+	collision.call_deferred("set", "disabled", false)
