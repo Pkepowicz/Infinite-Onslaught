@@ -2,6 +2,7 @@ extends Node2D
 
 @export var colors: Array[Color]
 @export var max_hp: int = 5
+var invunurable = false
 
 var hp: int
 var parent: Node
@@ -23,8 +24,15 @@ func _ready():
 	update_color()
 
 func take_damage(dmg: Damage):
+	if invunurable:
+		return
+	
 	hp -= dmg.dmg
 	var knockback: Vector2 = (global_position - dmg.knockback_origin).normalized() * dmg.knockback_force
+	
+	invunurable = true
+	$Timer.start()
+	
 	if knockback != Vector2.ZERO:
 		get_knocked_back.emit(knockback)
 	if(hp <= 0):
@@ -33,5 +41,5 @@ func take_damage(dmg: Damage):
 	
 	update_color()
 
-
-
+func _on_timer_timeout() -> void:
+	invunurable = false

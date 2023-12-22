@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://bl3l6v0ptt85a"]
+
+[ext_resource type="Script" path="res://assets/Levels/LevelTiles/lava_manager.gd" id="1_q474r"]
+[ext_resource type="Script" path="res://assets/Utils/Damage.gd" id="2_wicik"]
+
+[sub_resource type="Resource" id="Resource_n5wg8"]
+script = ExtResource("2_wicik")
+dmg = 1
+knockback_force = 0.0
+
+[node name="LavaManager" type="Node2D"]
+script = ExtResource("1_q474r")
+damage = SubResource("Resource_n5wg8")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 4.0
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
