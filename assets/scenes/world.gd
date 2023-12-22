@@ -128,7 +128,7 @@ func create_player(peer_id):
 	add_child(player)
 	sync_player_position.rpc_id(peer_id, pos)
 
-@rpc("any_peer", "call_local")
+@rpc("any_peer", "call_local", "reliable")
 func respawn_player(peer_id):
 	await get_tree().create_timer(5).timeout
 	create_player(peer_id)

@@ -65,6 +65,6 @@ func _on_hit_box_get_knocked_back(dir: Vector2) -> void:
 	velocity += dir * 2000
 
 func _on_hit_box_player_death():
-	queue_free()
 	if is_multiplayer_authority():
 		get_parent().respawn_player.rpc_id(1, multiplayer.get_unique_id())
+	queue_free()
