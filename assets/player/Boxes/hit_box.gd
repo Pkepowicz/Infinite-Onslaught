@@ -1,6 +1,5 @@
 extends Node2D
 
-@export var colors: Array[Color]
 @export var max_hp: int = 5
 
 var hp: int
@@ -10,8 +9,9 @@ signal update_color_signal(clr: Color)
 
 signal get_knocked_back(dir: Vector2)
 
+# Działa, będzie działać i tego nie ruszać ok?
 func update_color():
-	var color_percentage = 1 - float(hp)/float(max_hp)
+	var color_percentage = 1 - (float(hp)-1)/float(max_hp)
 	var red_value = clamp(2*color_percentage, 0, 1)
 	var green_value = clamp(2*(-color_percentage)+2, 0, 1)
 	var color_to_set = Color(red_value, green_value, 0, 1)

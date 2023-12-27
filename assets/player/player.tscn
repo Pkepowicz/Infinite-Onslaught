@@ -12,15 +12,12 @@
 radius = 127.825
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_g3wg3"]
-properties/0/path = NodePath(".:position")
+properties/0/path = NodePath(".:sync_pos")
 properties/0/spawn = true
 properties/0/replication_mode = 1
-properties/1/path = NodePath("GunRotation:rotation")
+properties/1/path = NodePath(".:sync_rot")
 properties/1/spawn = true
 properties/1/replication_mode = 1
-properties/2/path = NodePath(".:username")
-properties/2/spawn = false
-properties/2/replication_mode = 0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6xo8u"]
 radius = 108.167
@@ -62,12 +59,18 @@ scale = Vector2(0.515, 0.511335)
 texture = ExtResource("6_jjgt6")
 
 [node name="BulletSpawn" type="Node2D" parent="GunRotation"]
-position = Vector2(114, 2)
+position = Vector2(120, 0)
+
+[node name="Timer" type="Timer" parent="GunRotation"]
+wait_time = 0.25
+one_shot = true
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_interval = 0.05
 replication_config = SubResource("SceneReplicationConfig_g3wg3")
 
 [node name="HitBox" parent="." instance=ExtResource("4_661v0")]
+max_hp = 5
 
 [node name="CollisionShape2D" parent="HitBox/Area2D" index="0"]
 shape = SubResource("CircleShape2D_6xo8u")
