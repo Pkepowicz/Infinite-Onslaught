@@ -1,6 +1,7 @@
 extends Node2D
 
 @export var max_hp: int = 5
+@onready var collision = $Area2D/CollisionShape2D
 
 var hp: int
 var parent: Node
@@ -24,9 +25,13 @@ func _ready():
 	parent = get_parent()
 	update_color()
 
-func take_damage(dmg: Damage):
+func take_damage(dmg: Damage):	
 	hp -= dmg.dmg
 	var knockback: Vector2 = (global_position - dmg.knockback_origin).normalized() * dmg.knockback_force
+	
+	collision.call_deferred("set", "disabled", true)
+	$Timer.start()
+	
 	if knockback != Vector2.ZERO:
 		get_knocked_back.emit(knockback)
 	if(hp <= 0):
@@ -36,5 +41,5 @@ func take_damage(dmg: Damage):
 	
 	update_color()
 
-
-
+func _on_timer_timeout() -> void:
+	collision.call_deferred("set", "disabled", false)

@@ -1,5 +1,5 @@
-class_name Damage
+class_name Damage extends Resource
 
-var dmg: int
+@export var dmg: int
 var knockback_origin: Vector2
-var knockback_force: float
+@export var knockback_force: float
