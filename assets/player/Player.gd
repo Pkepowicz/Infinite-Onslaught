@@ -55,7 +55,6 @@ func Fire():
 	b.rotation_degrees = $GunRotation.rotation_degrees
 	get_tree().root.add_child(b)
 
-
 func _on_hit_box_update_color_signal(clr):
 	var inner: Sprite2D = $Graphics/Inner
 	var outer: Sprite2D = $Graphics/Outer
@@ -64,3 +63,8 @@ func _on_hit_box_update_color_signal(clr):
 
 func _on_hit_box_get_knocked_back(dir: Vector2) -> void:
 	velocity += dir * 2000
+
+func _on_hit_box_player_death():
+	if is_multiplayer_authority():
+		get_parent().respawn_player.rpc_id(1, multiplayer.get_unique_id())
+	queue_free()

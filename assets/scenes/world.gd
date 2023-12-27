@@ -72,12 +72,7 @@ func connection_error(error : String):
 # Function called only on server when new peer connects
 func add_player(peer_id):
 	print("Connected: " + str(peer_id) )
-	var player = Player.instantiate()
-	player.name = str(peer_id)
-	var pos = level.get_spawn()
-	player.global_position = pos
-	add_child(player)
-	sync_player_position.rpc_id(peer_id, pos)
+	create_player(peer_id)
 
 # Function called only on server when peer disconnects
 func remove_player(peer_id):
@@ -114,7 +109,8 @@ func sync_player_info(username, id):
 @rpc("authority", "call_local")
 func sync_player_position(pos):
 	var player = get_node_or_null(str(multiplayer.get_unique_id()))
-	player.position = pos
+	if player:
+		player.position = pos
 
 # Function used by server to notify client to update player's labels
 @rpc("authority", "call_local", "reliable")
@@ -123,6 +119,21 @@ func update_player_labels():
 	for player in players:
 		player.update_label()
 
+# Function called on server to add player instance
+func create_player(peer_id):
+	var player = Player.instantiate()
+	player.name = str(peer_id)
+	var pos = level.get_spawn()
+	player.global_position = pos
+	add_child(player)
+	sync_player_position.rpc_id(peer_id, pos)
+
+@rpc("any_peer", "call_local", "reliable")
+func respawn_player(peer_id):
+	await get_tree().create_timer(5).timeout
+	create_player(peer_id)
+	update_player_labels.rpc()
+	
 # Hosting server locally, mainly for debug purpose
 func _on_host_button_button_down():
 	host_server()

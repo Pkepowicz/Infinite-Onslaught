@@ -9,6 +9,8 @@ signal update_color_signal(clr: Color)
 
 signal get_knocked_back(dir: Vector2)
 
+signal player_death()
+
 # Działa, będzie działać i tego nie ruszać ok?
 func update_color():
 	var color_percentage = 1 - (float(hp)-1)/float(max_hp)
@@ -29,6 +31,7 @@ func take_damage(dmg: Damage):
 		get_knocked_back.emit(knockback)
 	if(hp <= 0):
 		print("player died")
+		player_death.emit()
 		return
 	
 	update_color()
