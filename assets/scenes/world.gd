@@ -25,7 +25,14 @@ func host_server():
 	$MainMenu.hide()
 	level.show()
 	
-	peer.create_server(PORT)
+	if '--server' in OS.get_cmdline_args():
+		var server_certs = load("res://assets/Keys/server.crt")
+		var server_key = load("res://assets/Keys/server.key")
+		var server_tls_options = TLSOptions.server(server_key, server_certs)
+		peer.create_server(PORT, "*", server_tls_options)
+	else:
+		peer.create_server(PORT)
+	
 	multiplayer.multiplayer_peer = peer
 	multiplayer.peer_connected.connect(add_player)
 	multiplayer.peer_disconnected.connect(remove_player)
@@ -38,7 +45,9 @@ func _on_join_button_button_down():
 	$MainMenu/Loading.show()
 	
 	var is_connected = false
-	var error = peer.create_client(address_entry.text + ":" + str(PORT))
+	var client_trusted_cas = load("res://assets/Keys/server.crt")
+	var client_tls_options = TLSOptions.client(client_trusted_cas)
+	var error = peer.create_client(address_entry.text + ":" + str(PORT), client_tls_options)
 	multiplayer.multiplayer_peer = peer
 	# Checking errors during socket creation
 	if error != OK && error != ERR_ALREADY_IN_USE:
