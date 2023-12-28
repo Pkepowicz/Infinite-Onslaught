@@ -6,6 +6,7 @@ extends Node2D
 
 const Player = preload("res://assets/player/player.tscn")
 const PORT = 2456
+var is_dedicated_server = false
 var peer = WebSocketMultiplayerPeer.new()
 var player_info = {}
 
@@ -13,6 +14,7 @@ var player_info = {}
 # For hosting headless server
 func _ready():
 	if '--server' in OS.get_cmdline_args():
+		is_dedicated_server = true
 		host_server()
 
 # Mandatory for websockets to work

@@ -2,8 +2,12 @@ extends TextureRect
 
 @onready var particle1 = $GPUParticles2D
 @onready var particle2 = $GPUParticles2D2
+@onready var world = $"../.."
 
 func _process(delta):
+	if world.is_dedicated_server:
+		return
+		
 	var canvas = get_canvas_transform()
 	var top_left = -canvas.origin / canvas.get_scale()
 	var size = get_viewport_rect().size / canvas.get_scale()
