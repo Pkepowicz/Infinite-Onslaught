@@ -7,6 +7,7 @@ const JUMP_VELOCITY = -400.0
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+var id : int
 var username : String
 @onready var attack_cooldown = $GunRotation/Timer
 
@@ -65,6 +66,6 @@ func _on_hit_box_get_knocked_back(dir: Vector2) -> void:
 	velocity += dir * 2000
 
 func _on_hit_box_player_death():
-	if is_multiplayer_authority():
-		get_parent().respawn_player.rpc_id(1, multiplayer.get_unique_id())
+	if multiplayer.is_server():
+		get_parent().respawn_player(str(name).to_int())
 	queue_free()

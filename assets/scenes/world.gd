@@ -45,9 +45,9 @@ func _on_join_button_button_down():
 	$MainMenu/Loading.show()
 	
 	var is_connected = false
-	var client_trusted_cas = load("res://assets/Keys/server.crt")
-	var client_tls_options = TLSOptions.client(client_trusted_cas)
-	var error = peer.create_client("wss://" + address_entry.text + ":" + str(PORT), client_tls_options)
+	#var client_trusted_cas = load("res://assets/Keys/server.crt")
+	#var client_tls_options = TLSOptions.client(client_trusted_cas)
+	var error = peer.create_client(address_entry.text + ":" + str(PORT))
 	multiplayer.multiplayer_peer = peer
 	# Checking errors during socket creation
 	if error != OK && error != ERR_ALREADY_IN_USE:
@@ -139,9 +139,9 @@ func create_player(peer_id):
 	add_child(player)
 	sync_player_position.rpc_id(peer_id, pos)
 
-@rpc("any_peer", "call_local", "reliable")
 func respawn_player(peer_id):
-	await get_tree().create_timer(5).timeout
+	print("Respawn called in: " + str(multiplayer.get_unique_id()))
+	await get_tree().create_timer(2).timeout
 	create_player(peer_id)
 	update_player_labels.rpc()
 	
