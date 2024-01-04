@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c4gjfccl30kj6"]
+
+[ext_resource type="Script" path="res://assets/PickUps/Powerup_Objects/Shield.gd" id="1_3f2sm"]
+
+[node name="Shield" type="Node2D"]
+script = ExtResource("1_3f2sm")
