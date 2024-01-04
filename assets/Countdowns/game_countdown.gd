@@ -14,7 +14,8 @@ func start_countdown(seconds_to_set : int):
 func _on_timer_timeout():
 	print("timer timeout")
 	seconds -= 1
-	$TimeLabel.set_text(str(seconds))
-	if seconds == 0:
+	if seconds < 0:
 		timer.stop()
 		emit_signal("end_game")
+	$TimeLabel.set_text(str(max(seconds,0)))
+	
