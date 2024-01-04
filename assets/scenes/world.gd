@@ -139,12 +139,19 @@ func create_player(peer_id):
 	add_child(player)
 	sync_player_position.rpc_id(peer_id, pos)
 
+# Function gets called only on server's player
 func respawn_player(peer_id):
 	print("Respawn called in: " + str(multiplayer.get_unique_id()))
+	respawn_time.rpc_id(peer_id, 2)
 	await get_tree().create_timer(2).timeout
 	create_player(peer_id)
 	update_player_labels.rpc()
-	
+
+@rpc("authority", "call_local", "reliable")
+func respawn_time(seconds_to_spawn):
+	$DeathScreen.show()
+	$DeathScreen/TimerContainer.start_countdown(seconds_to_spawn)
+
 # Hosting server locally, mainly for debug purpose
 func _on_host_button_button_down():
 	host_server()

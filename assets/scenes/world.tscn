@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://cmneeqglrbfky"]
+[gd_scene load_steps=22 format=3 uid="uid://cmneeqglrbfky"]
 
 [ext_resource type="Script" path="res://assets/scenes/world.gd" id="1_e253m"]
 [ext_resource type="Shader" path="res://assets/Client/background.gdshader" id="2_5jmin"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://assets/Client/Particles.gd" id="3_q8mmu"]
 [ext_resource type="Script" path="res://assets/Client/loadingCircle/TextureProgressBar.gd" id="3_wr7ma"]
 [ext_resource type="PackedScene" uid="uid://bk1g078p7iohx" path="res://assets/Levels/level1.tscn" id="6_p7gqs"]
+[ext_resource type="Script" path="res://assets/scenes/Countdown.gd" id="6_qns6a"]
 [ext_resource type="PackedScene" uid="uid://imyvhyhcgcyl" path="res://assets/Levels/spawn_point.tscn" id="7_pm4i1"]
 
 [sub_resource type="Gradient" id="Gradient_2uts8"]
@@ -74,8 +75,17 @@ scale_curve = SubResource("CurveTexture_0gkpd")
 color = Color(0.945098, 0.172549, 0.164706, 1)
 color_ramp = SubResource("GradientTexture1D_xyp1b")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d3ab3"]
+shader = ExtResource("2_5jmin")
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_d2veb"]
+
 [node name="world" type="Node2D"]
 script = ExtResource("1_e253m")
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://assets/player/player.tscn")
+spawn_path = NodePath("..")
 
 [node name="MainMenu" type="CanvasLayer" parent="."]
 
@@ -193,9 +203,47 @@ layout_mode = 2
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://assets/player/player.tscn")
-spawn_path = NodePath("..")
+[node name="DeathScreen" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="TextureRect" type="TextureRect" parent="DeathScreen"]
+material = SubResource("ShaderMaterial_d3ab3")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("PlaceholderTexture2D_d2veb")
+
+[node name="TimerContainer" type="VBoxContainer" parent="DeathScreen"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("6_qns6a")
+
+[node name="RespawnLabel" type="Label" parent="DeathScreen/TimerContainer"]
+layout_mode = 2
+text = "Respawning..."
+
+[node name="TimeLabel" type="Label" parent="DeathScreen/TimerContainer"]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Timer" type="Timer" parent="DeathScreen/TimerContainer/TimeLabel"]
+autostart = true
+
+[node name="UI" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="Level" parent="." instance=ExtResource("6_p7gqs")]
 visible = false
@@ -223,5 +271,6 @@ position = Vector2(671, 326)
 
 [connection signal="button_down" from="MainMenu/MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_button_down"]
 [connection signal="button_down" from="MainMenu/MainMenu/MarginContainer/VBoxContainer/JoinButton" to="." method="_on_join_button_button_down"]
+[connection signal="timeout" from="DeathScreen/TimerContainer/TimeLabel/Timer" to="DeathScreen/TimerContainer" method="_on_timer_timeout"]
 
 [editable path="Level"]
