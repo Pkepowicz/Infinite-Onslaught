@@ -140,10 +140,10 @@ func create_player(peer_id):
 	sync_player_position.rpc_id(peer_id, pos)
 
 # Function gets called only on server's player
-func respawn_player(peer_id):
+func respawn_player(peer_id, seconds_to_spawn = 2):
 	print("Respawn called in: " + str(multiplayer.get_unique_id()))
-	respawn_time.rpc_id(peer_id, 2)
-	await get_tree().create_timer(2).timeout
+	respawn_time.rpc_id(peer_id, seconds_to_spawn)
+	await get_tree().create_timer(seconds_to_spawn).timeout
 	create_player(peer_id)
 	update_player_labels.rpc()
 
@@ -151,6 +151,18 @@ func respawn_player(peer_id):
 func respawn_time(seconds_to_spawn):
 	$DeathScreen.show()
 	$DeathScreen/TimerContainer.start_countdown(seconds_to_spawn)
+
+func restart_game():
+	var players = get_tree().get_nodes_in_group("Player")
+	var players_to_spawn = []
+	for player in players:
+		players_to_spawn.append(player.name)
+		player.queue_free()
+	respawn_time.rpc(5)
+	await get_tree().create_timer(5).timeout
+	for player_id in players_to_spawn:
+		respawn_player(player_id.to_int(), 0)
+	$Level/TimerContainer.start_countdown(5)
 
 # Hosting server locally, mainly for debug purpose
 func _on_host_button_button_down():
@@ -160,4 +172,7 @@ func _on_host_button_button_down():
 	}
 	add_player(multiplayer.get_unique_id())
 	update_player_labels()
-	$Level/TimerContainer.start_countdown(180)
+	$Level/TimerContainer.start_countdown(5)
+
+func _on_timer_container_end_game():
+	restart_game()

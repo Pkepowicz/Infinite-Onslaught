@@ -1,6 +1,9 @@
 extends VBoxContainer
 
 @onready var timer = $TimeLabel/Timer
+
+signal end_game()
+
 var seconds: int = 0
 
 func start_countdown(seconds_to_set : int):
@@ -14,5 +17,4 @@ func _on_timer_timeout():
 	$TimeLabel.set_text(str(seconds))
 	if seconds == 0:
 		timer.stop()
-		$"..".hide()
-		$"../../ConclusionScreen".show()
+		emit_signal("end_game")

@@ -252,9 +252,6 @@ vertical_alignment = 1
 
 [node name="Timer" type="Timer" parent="DeathScreen/TimerContainer/TimeLabel"]
 
-[node name="ConclusionScreen" type="CanvasLayer" parent="."]
-visible = false
-
 [node name="Level" parent="." instance=ExtResource("6_p7gqs")]
 visible = false
 
@@ -303,7 +300,8 @@ replication_config = SubResource("SceneReplicationConfig_n6a03")
 
 [connection signal="button_down" from="MainMenu/MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_button_down"]
 [connection signal="button_down" from="MainMenu/MainMenu/MarginContainer/VBoxContainer/JoinButton" to="." method="_on_join_button_button_down"]
-[connection signal="timeout" from="DeathScreen/TimerContainer/TimeLabel/Timer" to="DeathScreen/TimerContainer" method="_on_timer_timeout"]
-[connection signal="timeout" from="Level/TimerContainer/TimeLabel/Timer" to="Level/TimerContainer" method="_on_timer_timeout"]
+[connection signal="timeout" from="DeathScreen/TimerContainer/TimeLabel/Timer" to="DeathScreen/TimerContainer" method="_on_timer_timeout" flags=3]
+[connection signal="end_game" from="Level/TimerContainer" to="." method="_on_timer_container_end_game"]
+[connection signal="timeout" from="Level/TimerContainer/TimeLabel/Timer" to="Level/TimerContainer" method="_on_timer_timeout" flags=3]
 
 [editable path="Level"]
