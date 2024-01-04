@@ -160,3 +160,4 @@ func _on_host_button_button_down():
 	}
 	add_player(multiplayer.get_unique_id())
 	update_player_labels()
+	$Level/TimerContainer.start_countdown(180)

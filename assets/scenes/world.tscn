@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://cmneeqglrbfky"]
+[gd_scene load_steps=24 format=3 uid="uid://cmneeqglrbfky"]
 
 [ext_resource type="Script" path="res://assets/scenes/world.gd" id="1_e253m"]
 [ext_resource type="Shader" path="res://assets/Client/background.gdshader" id="2_5jmin"]
@@ -79,6 +79,16 @@ color_ramp = SubResource("GradientTexture1D_xyp1b")
 shader = ExtResource("2_5jmin")
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_d2veb"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_4vst4"]
+font_size = 22
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_n6a03"]
+properties/0/path = NodePath("TimerContainer/TimeLabel:text")
+properties/0/spawn = true
+properties/0/replication_mode = 2
 
 [node name="world" type="Node2D"]
 script = ExtResource("1_e253m")
@@ -240,13 +250,28 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Timer" type="Timer" parent="DeathScreen/TimerContainer/TimeLabel"]
-autostart = true
-
-[node name="UI" type="CanvasLayer" parent="."]
-visible = false
 
 [node name="Level" parent="." instance=ExtResource("6_p7gqs")]
 visible = false
+
+[node name="TimerContainer" type="VBoxContainer" parent="Level"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 522.5
+offset_right = 629.5
+offset_bottom = 50.0
+grow_horizontal = 2
+script = ExtResource("6_qns6a")
+
+[node name="TimeLabel" type="Label" parent="Level/TimerContainer"]
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_4vst4")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Timer" type="Timer" parent="Level/TimerContainer/TimeLabel"]
 
 [node name="SpawnPoint" parent="Level/SpawnPoints" index="0"]
 position = Vector2(297, 119)
@@ -269,8 +294,12 @@ position = Vector2(673, 523)
 [node name="SpawnPoint7" parent="Level/SpawnPoints" index="6" instance=ExtResource("7_pm4i1")]
 position = Vector2(671, 326)
 
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="Level"]
+replication_config = SubResource("SceneReplicationConfig_n6a03")
+
 [connection signal="button_down" from="MainMenu/MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_button_down"]
 [connection signal="button_down" from="MainMenu/MainMenu/MarginContainer/VBoxContainer/JoinButton" to="." method="_on_join_button_button_down"]
 [connection signal="timeout" from="DeathScreen/TimerContainer/TimeLabel/Timer" to="DeathScreen/TimerContainer" method="_on_timer_timeout"]
+[connection signal="timeout" from="Level/TimerContainer/TimeLabel/Timer" to="Level/TimerContainer" method="_on_timer_timeout"]
 
 [editable path="Level"]
