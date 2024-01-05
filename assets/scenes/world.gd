@@ -26,16 +26,18 @@ func host_server():
 	level.show()
 	
 	if '--server' in OS.get_cmdline_args():
-		var server_certs = load("res://assets/Keys/server.crt")
-		var server_key = load("res://assets/Keys/server.key")
-		var server_tls_options = TLSOptions.server(server_key, server_certs)
-		peer.create_server(PORT, "*", server_tls_options)
+		#var server_certs = load("res://assets/Keys/server.crt")
+		#var server_key = load("res://assets/Keys/server.key")
+		#var server_tls_options = TLSOptions.server(server_key, server_certs)
+		#peer.create_server(PORT, "*", server_tls_options)
+		peer.create_server(PORT)
 	else:
 		peer.create_server(PORT)
 	
 	multiplayer.multiplayer_peer = peer
 	multiplayer.peer_connected.connect(add_player)
 	multiplayer.peer_disconnected.connect(remove_player)
+	$Level/TimerContainer.start_countdown(60)
 	print("Waiting for players!")
 
 func _on_join_button_button_down():
@@ -140,9 +142,10 @@ func create_player(peer_id):
 	sync_player_position.rpc_id(peer_id, pos)
 
 # Function gets called only on server's player
-func respawn_player(peer_id, seconds_to_spawn = 2):
+func respawn_player(peer_id, seconds_to_spawn = 2, notify_player = true):
 	print("Respawn called in: " + str(multiplayer.get_unique_id()))
-	respawn_time.rpc_id(peer_id, seconds_to_spawn)
+	if notify_player:
+		respawn_time.rpc_id(peer_id, seconds_to_spawn)
 	await get_tree().create_timer(seconds_to_spawn).timeout
 	create_player(peer_id)
 	update_player_labels.rpc()
@@ -158,11 +161,11 @@ func restart_game():
 	for player in players:
 		players_to_spawn.append(player.name)
 		player.queue_free()
-	respawn_time.rpc(5)
-	await get_tree().create_timer(5).timeout
+	respawn_time.rpc(10)
+	await get_tree().create_timer(10).timeout
 	for player_id in players_to_spawn:
-		respawn_player(player_id.to_int(), 0)
-	$Level/TimerContainer.start_countdown(5)
+		respawn_player(player_id.to_int(), 0, false)
+	$Level/TimerContainer.start_countdown(10)
 
 # Hosting server locally, mainly for debug purpose
 func _on_host_button_button_down():
@@ -172,7 +175,7 @@ func _on_host_button_button_down():
 	}
 	add_player(multiplayer.get_unique_id())
 	update_player_labels()
-	$Level/TimerContainer.start_countdown(5)
+
 
 func _on_timer_container_end_game():
 	restart_game()
