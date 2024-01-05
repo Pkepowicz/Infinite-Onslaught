@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://ikci0cwvea7n"]
+[gd_scene load_steps=13 format=3 uid="uid://ikci0cwvea7n"]
 
 [ext_resource type="Script" path="res://assets/player/Player.gd" id="1_sjxtg"]
 [ext_resource type="PackedScene" uid="uid://hhg0e3ylkxlg" path="res://assets/player/weapons/bullet.tscn" id="2_3wu67"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://cprcicf4r003o" path="res://assets/Client/loadingCircle/circle.png" id="4_1hs0d"]
 [ext_resource type="PackedScene" uid="uid://bjruntkvkehbs" path="res://assets/player/Boxes/hit_box.tscn" id="4_661v0"]
 [ext_resource type="Texture2D" uid="uid://bab8ah7e10iwa" path="res://assets/Client/shapes/arrow.png" id="6_jjgt6"]
+[ext_resource type="PackedScene" uid="uid://di5nl36x6gb8s" path="res://assets/PickUps/pickup_component.tscn" id="8_jrrrs"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_o8n4j"]
 radius = 127.825
@@ -27,7 +28,6 @@ font_size = 45
 font_color = Color(0, 1, 0, 1)
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
-position = Vector2(-2, -1)
 scale = Vector2(0.3, 0.3)
 collision_layer = 0
 collision_mask = 0
@@ -92,8 +92,11 @@ label_settings = SubResource("LabelSettings_wqpfd")
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="PickupComponent" parent="." instance=ExtResource("8_jrrrs")]
+
 [connection signal="get_knocked_back" from="HitBox" to="." method="_on_hit_box_get_knocked_back"]
 [connection signal="player_death" from="HitBox" to="." method="_on_hit_box_player_death"]
 [connection signal="update_color_signal" from="HitBox" to="." method="_on_hit_box_update_color_signal"]
 
 [editable path="HitBox"]
+[editable path="PickupComponent"]
