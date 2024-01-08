@@ -373,6 +373,7 @@ position = Vector2(470, 278)
 [connection signal="button_down" from="MainMenu/MainMenu/MarginContainer/VBoxContainer/JoinButton" to="." method="_on_join_button_button_down"]
 [connection signal="timeout" from="DeathScreen/TimerContainer/TimeLabel/Timer" to="DeathScreen/TimerContainer" method="_on_timer_timeout" flags=3]
 [connection signal="timeout" from="EndGameScreen/TimerContainer/TimeLabel/Timer" to="EndGameScreen/TimerContainer" method="_on_timer_timeout" flags=3]
+[connection signal="end_game" from="Level/TimerContainer" to="." method="_on_timer_container_end_game"]
 [connection signal="timeout" from="Level/TimerContainer/TimeLabel/Timer" to="Level/TimerContainer" method="_on_timer_timeout" flags=3]
 
 [editable path="Level"]

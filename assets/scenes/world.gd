@@ -37,7 +37,7 @@ func host_server():
 	multiplayer.multiplayer_peer = peer
 	multiplayer.peer_connected.connect(add_player)
 	multiplayer.peer_disconnected.connect(remove_player)
-	$Level/TimerContainer.start_countdown(60)
+	$Level/TimerContainer.start_countdown(10)
 	print("Waiting for players!")
 
 func _on_join_button_button_down():
@@ -154,14 +154,19 @@ func respawn_player(peer_id, seconds_to_spawn = 2, notify_player = true):
 func respawn_time(seconds_to_spawn):
 	$DeathScreen.show()
 	$DeathScreen/TimerContainer.start_countdown(seconds_to_spawn)
-
+	
+@rpc("authority", "call_local", "reliable")
+func endgame_time(seconds_to_spawn):
+	$EndGameScreen.show()
+	$EndGameScreen/TimerContainer.start_countdown(seconds_to_spawn)
+	
 func restart_game():
 	var players = get_tree().get_nodes_in_group("Player")
 	var players_to_spawn = []
 	for player in players:
 		players_to_spawn.append(player.name)
 		player.queue_free()
-	respawn_time.rpc(10)
+	endgame_time.rpc(10)
 	await get_tree().create_timer(10).timeout
 	for player_id in players_to_spawn:
 		respawn_player(player_id.to_int(), 0, false)

@@ -9,10 +9,8 @@ func start_countdown(seconds_to_set : int):
 	timer.start()
 
 func _on_timer_timeout():
-	print(seconds)
 	seconds -= 1
 	$TimeLabel.set_text(str(max(seconds,0)))
-	print(seconds)
 	if seconds <= 0:
 		timer.stop()
 		on_countdown_end()
