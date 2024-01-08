@@ -99,6 +99,9 @@ properties/0/replication_mode = 2
 
 [node name="world" type="Node2D"]
 script = ExtResource("1_e253m")
+game_length = 20
+game_break_lenght = 10
+player_respawn_time = 3
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("res://assets/player/player.tscn")

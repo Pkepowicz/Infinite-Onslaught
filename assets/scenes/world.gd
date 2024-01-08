@@ -3,6 +3,9 @@ extends Node2D
 @onready var address_entry = $MainMenu/MainMenu/MarginContainer/VBoxContainer/AddressEntry
 @onready var level = $Level
 
+@export var game_length : int
+@export var game_break_lenght : int
+@export var player_respawn_time : int
 
 const Player = preload("res://assets/player/player.tscn")
 const PORT = 2456
@@ -37,7 +40,7 @@ func host_server():
 	multiplayer.multiplayer_peer = peer
 	multiplayer.peer_connected.connect(add_player)
 	multiplayer.peer_disconnected.connect(remove_player)
-	$Level/TimerContainer.start_countdown(10)
+	$Level/TimerContainer.start_countdown(game_length)
 	print("Waiting for players!")
 
 func _on_join_button_button_down():
@@ -142,7 +145,7 @@ func create_player(peer_id):
 	sync_player_position.rpc_id(peer_id, pos)
 
 # Function gets called only on server's player
-func respawn_player(peer_id, seconds_to_spawn = 2, notify_player = true):
+func respawn_player(peer_id, seconds_to_spawn = player_respawn_time, notify_player = true):
 	print("Respawn called in: " + str(multiplayer.get_unique_id()))
 	if notify_player:
 		respawn_time.rpc_id(peer_id, seconds_to_spawn)
@@ -166,11 +169,11 @@ func restart_game():
 	for player in players:
 		players_to_spawn.append(player.name)
 		player.queue_free()
-	endgame_time.rpc(10)
-	await get_tree().create_timer(10).timeout
+	endgame_time.rpc(game_break_lenght)
+	await get_tree().create_timer(game_break_lenght).timeout
 	for player_id in players_to_spawn:
 		respawn_player(player_id.to_int(), 0, false)
-	$Level/TimerContainer.start_countdown(10)
+	$Level/TimerContainer.start_countdown(game_length)
 
 # Hosting server locally, mainly for debug purpose
 func _on_host_button_button_down():
