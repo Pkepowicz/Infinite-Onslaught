@@ -9,11 +9,11 @@ func _ready() -> void:
 func deal_damage(dmg: Damage) -> void:
 	
 	var areas: Array[Area2D] = area.get_overlapping_areas ()
-	print("trying to deal damage on these areas: ", areas)
+	#print("trying to deal damage on these areas: ", areas)
 	for ar in areas:
-		print(ar)
+		#print(ar)
 		if ar.get_parent().has_method("take_damage"):
-			print("tile ", self, " dealt damage to ", ar.get_parent())
+			#print("tile ", self, " dealt damage to ", ar.get_parent())
 			ar.get_parent().take_damage(dmg)
 			
 

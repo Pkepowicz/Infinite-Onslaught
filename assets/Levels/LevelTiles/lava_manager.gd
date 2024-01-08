@@ -20,5 +20,5 @@ func add_tile_to_array(tile: LavaTile) -> void:
 
 func _on_timer_timeout() -> void:
 	for tile in tiles:
-		print("tile ", tile, " dealt damage")
+		#print("tile ", tile, " dealt damage")
 		tile.deal_damage(damage)

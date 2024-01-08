@@ -6,6 +6,7 @@ extends Node2D
 @export var min_spawn_separation_distance: float
 
 func get_spawn():
+	spawn_points.shuffle()
 	for point in spawn_points:
 		print("Checking point: ", point)
 		if point.can_spawn_here():
