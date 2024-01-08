@@ -5,6 +5,7 @@ extends Node2D
 
 var hp: int
 var parent: Node
+var immune: bool = false
 
 signal update_color_signal(clr: Color)
 
@@ -26,6 +27,8 @@ func _ready():
 	update_color()
 
 func take_damage(dmg: Damage):	
+	if immune:
+		return
 	hp -= dmg.dmg
 	var knockback: Vector2 = (global_position - dmg.knockback_origin).normalized() * dmg.knockback_force
 	
