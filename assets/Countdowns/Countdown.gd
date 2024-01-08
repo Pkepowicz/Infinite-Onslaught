@@ -15,5 +15,7 @@ func _on_timer_timeout():
 	print(seconds)
 	if seconds <= 0:
 		timer.stop()
-		$"..".hide()
+		on_countdown_end()
 
+func on_countdown_end():
+	pass
