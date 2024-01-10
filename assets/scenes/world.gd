@@ -113,7 +113,8 @@ func on_player_connected():
 func sync_player_info(username, id):
 	if !player_info.has(id):
 		player_info[id] = {
-			"username" = username
+			"username" = username,
+			"score" = 0
 		}
 	
 	if multiplayer.is_server():
@@ -134,6 +135,12 @@ func update_player_labels():
 	var players = get_tree().get_nodes_in_group("Player")
 	for player in players:
 		player.update_label()
+
+func update_player_scores(point_scorer):
+	if player_info.has(point_scorer.to_int()):
+		player_info[point_scorer.to_int()].score += 1
+	else:
+		print(point_scorer)
 
 # Function called on server to add player instance
 func create_player(peer_id):
@@ -179,11 +186,11 @@ func restart_game():
 func _on_host_button_button_down():
 	host_server()
 	player_info[1] = {
-		"username" = "host"
+		"username" = "host",
+		"score" = 0
 	}
 	add_player(multiplayer.get_unique_id())
 	update_player_labels()
-
 
 func _on_timer_container_end_game():
 	restart_game()

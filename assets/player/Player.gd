@@ -33,7 +33,10 @@ func _physics_process(delta):
 		attack_cooldown.start()
 		print(username)
 		Fire.rpc()
-		
+	
+	if Input.is_action_just_pressed("SpecialButton"):
+		print(get_parent().player_info)
+	
 	sync_pos = global_position
 	sync_rot = $GunRotation.rotation_degrees
 	var direction_x = Input.get_axis("ui_left", "ui_right")
@@ -65,7 +68,9 @@ func _on_hit_box_update_color_signal(clr):
 func _on_hit_box_get_knocked_back(dir: Vector2) -> void:
 	velocity += dir * 2000
 
-func _on_hit_box_player_death():
+func _on_hit_box_player_death(last_hit):
 	if multiplayer.is_server():
 		get_parent().respawn_player(str(name).to_int())
+		if last_hit:
+			get_parent().update_player_scores(last_hit)
 	queue_free()
