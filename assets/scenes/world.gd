@@ -209,4 +209,6 @@ func _on_timer_container_end_game():
 	restart_game()
 
 func comparePlayers(a, b):
-	return b["score"] - a["score"]
+	if a["score"] < b["score"]:
+		return false
+	return true
