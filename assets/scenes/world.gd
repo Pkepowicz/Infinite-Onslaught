@@ -3,6 +3,9 @@ extends Node2D
 @onready var address_entry = $MainMenu/MainMenu/MarginContainer/VBoxContainer/AddressEntry
 @onready var level = $Level
 
+@export var game_length : int
+@export var game_break_lenght : int
+@export var player_respawn_time : int
 
 const Player = preload("res://assets/player/player.tscn")
 const PORT = 2456
@@ -26,16 +29,18 @@ func host_server():
 	level.show()
 	
 	if '--server' in OS.get_cmdline_args():
-		var server_certs = load("res://assets/Keys/server.crt")
-		var server_key = load("res://assets/Keys/server.key")
-		var server_tls_options = TLSOptions.server(server_key, server_certs)
-		peer.create_server(PORT, "*", server_tls_options)
+		#var server_certs = load("res://assets/Keys/server.crt")
+		#var server_key = load("res://assets/Keys/server.key")
+		#var server_tls_options = TLSOptions.server(server_key, server_certs)
+		#peer.create_server(PORT, "*", server_tls_options)
+		peer.create_server(PORT)
 	else:
 		peer.create_server(PORT)
 	
 	multiplayer.multiplayer_peer = peer
 	multiplayer.peer_connected.connect(add_player)
 	multiplayer.peer_disconnected.connect(remove_player)
+	$Level/TimerContainer.start_countdown(game_length)
 	print("Waiting for players!")
 
 func _on_join_button_button_down():
@@ -45,9 +50,9 @@ func _on_join_button_button_down():
 	$MainMenu/Loading.show()
 	
 	var is_connected = false
-	var client_trusted_cas = load("res://assets/Keys/server.crt")
-	var client_tls_options = TLSOptions.client(client_trusted_cas)
-	var error = peer.create_client("ws://" + address_entry.text + ":" + str(PORT), client_tls_options)
+	#var client_trusted_cas = load("res://assets/Keys/server.crt")
+	#var client_tls_options = TLSOptions.client(client_trusted_cas)
+	var error = peer.create_client(address_entry.text + ":" + str(PORT))
 	multiplayer.multiplayer_peer = peer
 	# Checking errors during socket creation
 	if error != OK && error != ERR_ALREADY_IN_USE:
@@ -139,12 +144,37 @@ func create_player(peer_id):
 	add_child(player)
 	sync_player_position.rpc_id(peer_id, pos)
 
-@rpc("any_peer", "call_local", "reliable")
-func respawn_player(peer_id):
-	await get_tree().create_timer(5).timeout
+# Function gets called only on server's player
+func respawn_player(peer_id, seconds_to_spawn = player_respawn_time, notify_player = true):
+	print("Respawn called in: " + str(multiplayer.get_unique_id()))
+	if notify_player:
+		respawn_time.rpc_id(peer_id, seconds_to_spawn)
+	await get_tree().create_timer(seconds_to_spawn).timeout
 	create_player(peer_id)
 	update_player_labels.rpc()
+
+@rpc("authority", "call_local", "reliable")
+func respawn_time(seconds_to_spawn):
+	$DeathScreen.show()
+	$DeathScreen/TimerContainer.start_countdown(seconds_to_spawn)
 	
+@rpc("authority", "call_local", "reliable")
+func endgame_time(seconds_to_spawn):
+	$EndGameScreen.show()
+	$EndGameScreen/TimerContainer.start_countdown(seconds_to_spawn)
+	
+func restart_game():
+	var players = get_tree().get_nodes_in_group("Player")
+	var players_to_spawn = []
+	for player in players:
+		players_to_spawn.append(player.name)
+		player.queue_free()
+	endgame_time.rpc(game_break_lenght)
+	await get_tree().create_timer(game_break_lenght).timeout
+	for player_id in players_to_spawn:
+		respawn_player(player_id.to_int(), 0, false)
+	$Level/TimerContainer.start_countdown(game_length)
+
 # Hosting server locally, mainly for debug purpose
 func _on_host_button_button_down():
 	host_server()
@@ -153,3 +183,7 @@ func _on_host_button_button_down():
 	}
 	add_player(multiplayer.get_unique_id())
 	update_player_labels()
+
+
+func _on_timer_container_end_game():
+	restart_game()
