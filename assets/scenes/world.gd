@@ -122,6 +122,11 @@ func sync_player_info(username, id):
 			sync_player_info.rpc(player_info[i].username, i)
 		update_player_labels.rpc()
 
+@rpc("authority", "call_remote", "reliable")
+func sync_player_score(id, score):
+	player_info[id].score = score
+	
+
 # Function used by server to notify client of his player's position on startup
 @rpc("authority", "call_local")
 func sync_player_position(pos):
@@ -137,10 +142,12 @@ func update_player_labels():
 		player.update_label()
 
 func update_player_scores(point_scorer):
-	if player_info.has(point_scorer.to_int()):
-		player_info[point_scorer.to_int()].score += 1
-	else:
-		print(point_scorer)
+	if !player_info.has(point_scorer):
+		return
+	player_info[point_scorer].score += 1
+	
+	if multiplayer.is_server():
+		sync_player_score.rpc(point_scorer, player_info[point_scorer].score)
 
 # Function called on server to add player instance
 func create_player(peer_id):

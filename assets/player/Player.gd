@@ -72,5 +72,5 @@ func _on_hit_box_player_death(last_hit):
 	if multiplayer.is_server():
 		get_parent().respawn_player(str(name).to_int())
 		if last_hit:
-			get_parent().update_player_scores(last_hit)
+			get_parent().update_player_scores(last_hit.to_int())
 	queue_free()
