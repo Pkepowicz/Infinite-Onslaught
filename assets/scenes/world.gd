@@ -173,17 +173,23 @@ func respawn_time(seconds_to_spawn):
 	$DeathScreen/TimerContainer.start_countdown(seconds_to_spawn)
 	
 @rpc("authority", "call_local", "reliable")
-func endgame_time(seconds_to_spawn):
-	$EndGameScreen.show()
+func endgame_time(seconds_to_spawn, players_score):
+	$EndGameScreen.show_scores(players_score)
 	$EndGameScreen/TimerContainer.start_countdown(seconds_to_spawn)
 	
 func restart_game():
 	var players = get_tree().get_nodes_in_group("Player")
 	var players_to_spawn = []
+	var players_score = []
 	for player in players:
 		players_to_spawn.append(player.name)
 		player.queue_free()
-	endgame_time.rpc(game_break_lenght)
+	for player_id in player_info:
+		players_score.append(player_info[player_id].duplicate())
+		player_info[player_id].score = 0
+	players_score.sort_custom(comparePlayers)
+	print(players_score)
+	endgame_time.rpc(game_break_lenght, players_score)
 	await get_tree().create_timer(game_break_lenght).timeout
 	for player_id in players_to_spawn:
 		respawn_player(player_id.to_int(), 0, false)
@@ -201,3 +207,6 @@ func _on_host_button_button_down():
 
 func _on_timer_container_end_game():
 	restart_game()
+
+func comparePlayers(a, b):
+	return b["score"] - a["score"]
