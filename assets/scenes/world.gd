@@ -47,7 +47,7 @@ func _on_join_button_button_down():
 	var is_connected = false
 	var client_trusted_cas = load("res://assets/Keys/server.crt")
 	var client_tls_options = TLSOptions.client(client_trusted_cas)
-	var error = peer.create_client("wss://" + address_entry.text + ":" + str(PORT), client_tls_options)
+	var error = peer.create_client("ws://" + address_entry.text + ":" + str(PORT), client_tls_options)
 	multiplayer.multiplayer_peer = peer
 	# Checking errors during socket creation
 	if error != OK && error != ERR_ALREADY_IN_USE:
