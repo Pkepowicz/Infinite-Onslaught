@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://cmneeqglrbfky"]
+[gd_scene load_steps=29 format=3 uid="uid://cmneeqglrbfky"]
 
 [ext_resource type="Script" path="res://assets/scenes/world.gd" id="1_e253m"]
 [ext_resource type="Shader" path="res://assets/Client/background.gdshader" id="2_5jmin"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://assets/Client/loadingCircle/TextureProgressBar.gd" id="3_wr7ma"]
 [ext_resource type="Script" path="res://assets/Countdowns/Death_countdown.gd" id="6_3ao1x"]
 [ext_resource type="PackedScene" uid="uid://bk1g078p7iohx" path="res://assets/Levels/level1.tscn" id="6_p7gqs"]
+[ext_resource type="Script" path="res://assets/Utils/EndGameScreen.gd" id="7_k2tn8"]
 [ext_resource type="PackedScene" uid="uid://imyvhyhcgcyl" path="res://assets/Levels/spawn_point.tscn" id="7_pm4i1"]
 [ext_resource type="Script" path="res://assets/Countdowns/Endgame_countdown.gd" id="7_y01s1"]
 [ext_resource type="PackedScene" uid="uid://byf36axd6qbvi" path="res://assets/PickUps/PickupObjectsToPutOnGround/ShieldPickup.tscn" id="8_4vx0s"]
@@ -263,6 +264,7 @@ vertical_alignment = 1
 
 [node name="EndGameScreen" type="CanvasLayer" parent="."]
 visible = false
+script = ExtResource("7_k2tn8")
 
 [node name="TextureRect" type="TextureRect" parent="EndGameScreen"]
 material = SubResource("ShaderMaterial_d3ab3")
@@ -296,17 +298,14 @@ horizontal_alignment = 1
 
 [node name="PlayerScore1" type="Label" parent="EndGameScreen/TimerContainer"]
 layout_mode = 2
-text = "1. Player .... Score"
 horizontal_alignment = 1
 
 [node name="PlayerScore2" type="Label" parent="EndGameScreen/TimerContainer"]
 layout_mode = 2
-text = "2. Player .... Score"
 horizontal_alignment = 1
 
 [node name="PlayerScore3" type="Label" parent="EndGameScreen/TimerContainer"]
 layout_mode = 2
-text = "3. Player .... Score"
 horizontal_alignment = 1
 
 [node name="NewGameText" type="Label" parent="EndGameScreen/TimerContainer"]

@@ -113,13 +113,19 @@ func on_player_connected():
 func sync_player_info(username, id):
 	if !player_info.has(id):
 		player_info[id] = {
-			"username" = username
+			"username" = username,
+			"score" = 0
 		}
 	
 	if multiplayer.is_server():
 		for i in player_info:
 			sync_player_info.rpc(player_info[i].username, i)
 		update_player_labels.rpc()
+
+@rpc("authority", "call_remote", "reliable")
+func sync_player_score(id, score):
+	player_info[id].score = score
+	
 
 # Function used by server to notify client of his player's position on startup
 @rpc("authority", "call_local")
@@ -134,6 +140,14 @@ func update_player_labels():
 	var players = get_tree().get_nodes_in_group("Player")
 	for player in players:
 		player.update_label()
+
+func update_player_scores(point_scorer):
+	if !player_info.has(point_scorer):
+		return
+	player_info[point_scorer].score += 1
+	
+	if multiplayer.is_server():
+		sync_player_score.rpc(point_scorer, player_info[point_scorer].score)
 
 # Function called on server to add player instance
 func create_player(peer_id):
@@ -159,17 +173,23 @@ func respawn_time(seconds_to_spawn):
 	$DeathScreen/TimerContainer.start_countdown(seconds_to_spawn)
 	
 @rpc("authority", "call_local", "reliable")
-func endgame_time(seconds_to_spawn):
-	$EndGameScreen.show()
+func endgame_time(seconds_to_spawn, players_score):
+	$EndGameScreen.show_scores(players_score)
 	$EndGameScreen/TimerContainer.start_countdown(seconds_to_spawn)
 	
 func restart_game():
 	var players = get_tree().get_nodes_in_group("Player")
 	var players_to_spawn = []
+	var players_score = []
 	for player in players:
 		players_to_spawn.append(player.name)
 		player.queue_free()
-	endgame_time.rpc(game_break_lenght)
+	for player_id in player_info:
+		players_score.append(player_info[player_id].duplicate())
+		player_info[player_id].score = 0
+	players_score.sort_custom(comparePlayers)
+	print(players_score)
+	endgame_time.rpc(game_break_lenght, players_score)
 	await get_tree().create_timer(game_break_lenght).timeout
 	for player_id in players_to_spawn:
 		respawn_player(player_id.to_int(), 0, false)
@@ -179,11 +199,16 @@ func restart_game():
 func _on_host_button_button_down():
 	host_server()
 	player_info[1] = {
-		"username" = "host"
+		"username" = "host",
+		"score" = 0
 	}
 	add_player(multiplayer.get_unique_id())
 	update_player_labels()
 
-
 func _on_timer_container_end_game():
 	restart_game()
+
+func comparePlayers(a, b):
+	if a["score"] < b["score"]:
+		return false
+	return true
