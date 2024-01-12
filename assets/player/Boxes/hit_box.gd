@@ -31,7 +31,8 @@ func take_damage(dmg: Damage):
 	if immune:
 		return
 	hp -= dmg.dmg
-	var knockback: Vector2 = (global_position - dmg.knockback_origin).normalized() * dmg.knockback_force
+	var knockback_coefficient = (float(max_hp - hp) / max_hp)
+	var knockback: Vector2 = (global_position - dmg.knockback_origin).normalized() * dmg.knockback_force * knockback_coefficient
 	if dmg.owner:
 		last_hit = dmg.owner
 	
