@@ -42,7 +42,6 @@ func take_damage(dmg: Damage):
 		get_knocked_back.emit(knockback)
 	if(hp <= 0):
 		print("player died")
-		print(last_hit)
 		player_death.emit(last_hit)
 		return
 	
