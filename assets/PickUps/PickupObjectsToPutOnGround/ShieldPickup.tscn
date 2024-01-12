@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://byf36axd6qbvi"]
+
+[ext_resource type="Script" path="res://assets/PickUps/Pickup.gd" id="1_ikq3q"]
+[ext_resource type="PackedScene" uid="uid://c4gjfccl30kj6" path="res://assets/PickUps/Powerup_Objects/shield.tscn" id="2_rks1n"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p4jjv"]
+size = Vector2(47, 47)
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_ikq3q")
+powerup_object = ExtResource("2_rks1n")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -19.0
+offset_top = -19.0
+offset_right = 21.0
+offset_bottom = 21.0
+color = Color(0, 0, 1, 1)
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0.5, 0.5)
+shape = SubResource("RectangleShape2D_p4jjv")

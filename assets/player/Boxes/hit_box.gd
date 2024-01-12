@@ -5,6 +5,8 @@ extends Node2D
 
 var hp: int
 var parent: Node
+var immune: bool = false
+var last_hit
 
 signal update_color_signal(clr: Color)
 
@@ -26,9 +28,13 @@ func _ready():
 	update_color()
 
 func take_damage(dmg: Damage):	
+	if immune:
+		return
 	hp -= dmg.dmg
 	var knockback_coefficient = (float(max_hp - hp) / max_hp)
 	var knockback: Vector2 = (global_position - dmg.knockback_origin).normalized() * dmg.knockback_force * knockback_coefficient
+	if dmg.owner:
+		last_hit = dmg.owner
 	
 	collision.call_deferred("set", "disabled", true)
 	$Timer.start()
@@ -37,7 +43,7 @@ func take_damage(dmg: Damage):
 		get_knocked_back.emit(knockback)
 	if(hp <= 0):
 		print("player died")
-		player_death.emit()
+		player_death.emit(last_hit)
 		return
 	
 	update_color()

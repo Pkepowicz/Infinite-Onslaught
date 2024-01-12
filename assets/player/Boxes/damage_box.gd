@@ -13,6 +13,7 @@ func deal_damage(area: Area2D) -> void:
 	dmg.dmg = damage
 	dmg.knockback_origin = get_parent().global_position
 	dmg.knockback_force = knockback_force
+	dmg.owner = parent.name
 	
 	area.get_parent().take_damage(dmg)
 	get_parent().queue_free()
