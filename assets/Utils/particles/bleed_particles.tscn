@@ -1,0 +1,36 @@
+[gd_scene load_steps=3 format=3 uid="uid://2mjb1kjgq8q"]
+
+[ext_resource type="Script" path="res://assets/Utils/particles/BleedParticles.gd" id="1_78whx"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ufj0d"]
+particle_flag_disable_z = true
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 0.0
+emission_ring_radius = 30.0
+emission_ring_inner_radius = 15.0
+angle_max = 180.0
+direction = Vector3(1, 1, 0)
+spread = 180.0
+radial_velocity_min = 20.0
+radial_velocity_max = 40.0
+gravity = Vector3(0, 0, 0)
+radial_accel_max = 50.0
+tangential_accel_min = -20.0
+tangential_accel_max = 20.0
+scale_max = 10.0
+
+[node name="BleedParticles" type="GPUParticles2D"]
+emitting = false
+amount = 18
+process_material = SubResource("ParticleProcessMaterial_ufj0d")
+lifetime = 0.5
+one_shot = true
+explosiveness = 0.8
+randomness = 0.6
+interp_to_end = 1.0
+script = ExtResource("1_78whx")
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

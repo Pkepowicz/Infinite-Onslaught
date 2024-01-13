@@ -21,6 +21,7 @@ lava_manager="*res://assets/Levels/LevelTiles/lava_manager.tscn"
 
 [display]
 
+window/size/resizable=false
 mouse_cursor/custom_image="res://assets/Client/UI/crosshair.png"
 mouse_cursor/custom_image_hotspot=Vector2(32, 32)
 

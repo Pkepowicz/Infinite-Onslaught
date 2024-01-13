@@ -2,7 +2,7 @@ extends Node2D
 
 @export var max_hp: int = 5
 @onready var collision = $Area2D/CollisionShape2D
-@onready var bleed_particles = $BleedParticles
+@onready var bleed_particles = preload("res://assets/Utils/particles/bleed_particles.tscn")
 
 var hp: int
 var parent: Node
@@ -40,14 +40,16 @@ func take_damage(dmg: Damage):
 	collision.call_deferred("set", "disabled", true)
 	$Timer.start()
 	
+	var p = bleed_particles.instantiate()
+	p.global_position = global_position
+	get_tree().root.add_child(p)
+	
 	if knockback != Vector2.ZERO:
 		get_knocked_back.emit(knockback)
 	if(hp <= 0):
 		print("player died")
 		player_death.emit(last_hit)
 		return
-	bleed_particles.restart()
-	bleed_particles.emitting = true
 	update_color()
 
 func _on_timer_timeout() -> void:
