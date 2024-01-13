@@ -15,6 +15,8 @@ var sync_pos = Vector2(0,0)
 var sync_rot = 0
 
 @export var bullet : PackedScene
+@export var flash_color : Color
+@export var flash_timeout : float
 
 func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())
@@ -62,6 +64,9 @@ func Fire():
 func _on_hit_box_update_color_signal(clr):
 	var inner: Sprite2D = $Graphics/Inner
 	var outer: Sprite2D = $Graphics/Outer
+	inner.modulate = flash_color
+	outer.modulate = flash_color
+	await get_tree().create_timer(flash_timeout).timeout
 	inner.modulate = clr
 	outer.modulate = clr
 
