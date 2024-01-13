@@ -61,12 +61,13 @@ func Fire():
 	b.rotation_degrees = $GunRotation.rotation_degrees
 	get_tree().root.add_child(b)
 
-func _on_hit_box_update_color_signal(clr):
+func _on_hit_box_update_color_signal(clr, after_hit):
 	var inner: Sprite2D = $Graphics/Inner
 	var outer: Sprite2D = $Graphics/Outer
-	inner.modulate = flash_color
-	outer.modulate = flash_color
-	await get_tree().create_timer(flash_timeout).timeout
+	if after_hit:
+		inner.modulate = flash_color
+		outer.modulate = flash_color
+		await get_tree().create_timer(flash_timeout).timeout
 	inner.modulate = clr
 	outer.modulate = clr
 

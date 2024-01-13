@@ -15,17 +15,17 @@ signal get_knocked_back(dir: Vector2)
 signal player_death()
 
 # Działa, będzie działać i tego nie ruszać ok?
-func update_color():
+func update_color(after_hit = true):
 	var color_percentage = 1 - (float(hp)-1)/float(max_hp)
 	var red_value = clamp(2*color_percentage, 0, 1)
 	var green_value = clamp(2*(-color_percentage)+2, 0, 1)
 	var color_to_set = Color(red_value, green_value, 0, 1)
-	update_color_signal.emit(color_to_set)
+	update_color_signal.emit(color_to_set, after_hit)
 
 func _ready():
 	hp = max_hp
 	parent = get_parent()
-	update_color()
+	update_color(false)
 
 func take_damage(dmg: Damage):	
 	if immune:
