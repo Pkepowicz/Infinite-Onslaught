@@ -37,7 +37,7 @@ func _physics_process(delta):
 		Fire.rpc()
 	
 	if Input.is_action_just_pressed("SpecialButton"):
-		print(get_parent().player_info)
+		get_parent().send_Shockwave(get_global_position())
 	
 	sync_pos = global_position
 	sync_rot = $GunRotation.rotation_degrees
@@ -75,6 +75,7 @@ func _on_hit_box_get_knocked_back(dir: Vector2) -> void:
 	velocity += dir * 2000
 
 func _on_hit_box_player_death(last_hit):
+	get_parent().send_Shockwave(get_global_position())
 	if multiplayer.is_server():
 		get_parent().respawn_player(str(name).to_int())
 		if last_hit:

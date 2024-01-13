@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://cmneeqglrbfky"]
+[gd_scene load_steps=34 format=3 uid="uid://cmneeqglrbfky"]
 
 [ext_resource type="Script" path="res://assets/scenes/world.gd" id="1_e253m"]
 [ext_resource type="Shader" path="res://assets/Client/background.gdshader" id="2_5jmin"]
@@ -12,6 +12,76 @@
 [ext_resource type="Script" path="res://assets/Countdowns/Endgame_countdown.gd" id="7_y01s1"]
 [ext_resource type="PackedScene" uid="uid://byf36axd6qbvi" path="res://assets/PickUps/PickupObjectsToPutOnGround/ShieldPickup.tscn" id="8_4vx0s"]
 [ext_resource type="Script" path="res://assets/Countdowns/Game_countdown.gd" id="9_sop3o"]
+[ext_resource type="Shader" path="res://assets/Utils/shockwave.gdshader" id="13_nogt7"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tjdjq"]
+shader = ExtResource("13_nogt7")
+shader_parameter/global_position = Vector2(300, 600)
+shader_parameter/screen_size = Vector2(1152, 648)
+shader_parameter/force = 0.0
+shader_parameter/size = 0.0
+shader_parameter/thickness = 0.0
+
+[sub_resource type="Animation" id="Animation_csfr5"]
+resource_name = "Shockwave"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/force")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.7, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:material:shader_parameter/size")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 0.2]
+}
+
+[sub_resource type="Animation" id="Animation_q1o83"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/force")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:material:shader_parameter/size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8wn58"]
+_data = {
+"RESET": SubResource("Animation_q1o83"),
+"Shockwave": SubResource("Animation_csfr5")
+}
 
 [sub_resource type="Gradient" id="Gradient_2uts8"]
 interpolation_mode = 2
@@ -103,6 +173,21 @@ script = ExtResource("1_e253m")
 game_length = 20
 game_break_lenght = 10
 player_respawn_time = 3
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_tjdjq")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/ColorRect"]
+libraries = {
+"": SubResource("AnimationLibrary_8wn58")
+}
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("res://assets/player/player.tscn")
