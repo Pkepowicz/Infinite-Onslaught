@@ -10,59 +10,37 @@ script = ExtResource("1_hio7e")
 [node name="SpawnPoints" type="Node" parent="."]
 
 [node name="SpawnPoint" parent="SpawnPoints" instance=ExtResource("2_jop0o")]
-position = Vector2(573, 119)
+position = Vector2(116, 87)
 
 [node name="SpawnPoint2" parent="SpawnPoints" instance=ExtResource("2_jop0o")]
-position = Vector2(837, 429)
+position = Vector2(1058, 542)
 
 [node name="SpawnPoint3" parent="SpawnPoints" instance=ExtResource("2_jop0o")]
-position = Vector2(361, 385)
-
-[node name="Lava" type="Node2D" parent="."]
-
-[node name="LavaTile" parent="Lava" instance=ExtResource("3_q5fiu")]
-position = Vector2(661, -4950)
-scale = Vector2(1000, 500)
-
-[node name="LavaTile2" parent="Lava" instance=ExtResource("3_q5fiu")]
-position = Vector2(11154, 5053)
-scale = Vector2(1000, 500)
-
-[node name="LavaTile3" parent="Lava" instance=ExtResource("3_q5fiu")]
-position = Vector2(-9804, 3667)
-scale = Vector2(1000, 500)
-
-[node name="LavaTile4" parent="Lava" instance=ExtResource("3_q5fiu")]
-position = Vector2(-947, 6360)
-scale = Vector2(1000, 500)
-
-[node name="LavaTile5" parent="Lava" instance=ExtResource("3_q5fiu")]
-position = Vector2(381, 704)
-scale = Vector2(20, 21.9)
-
-[node name="LavaTile6" parent="Lava" instance=ExtResource("3_q5fiu")]
-position = Vector2(1009, 705)
-scale = Vector2(20, 21.9)
+position = Vector2(101, 553)
 
 [node name="Ground" type="Node2D" parent="."]
 
 [node name="ColorRect" type="ColorRect" parent="Ground"]
-offset_left = 196.0
-offset_top = 50.0
-offset_right = 1154.0
-offset_bottom = 487.0
+offset_left = 33.0
+offset_top = 23.0
+offset_right = 1127.0
+offset_bottom = 608.0
 color = Color(0, 0, 0, 1)
 
-[node name="ColorRect3" type="ColorRect" parent="Ground"]
-offset_left = 197.0
-offset_top = 923.0
-offset_right = 1155.0
-offset_bottom = 1360.0
-color = Color(0, 0, 0, 1)
+[node name="Lava" type="Node2D" parent="."]
 
-[node name="ColorRect2" type="ColorRect" parent="Ground"]
-offset_left = 506.0
-offset_top = 477.0
-offset_right = 808.0
-offset_bottom = 925.0
-color = Color(0, 0, 0, 1)
+[node name="LavaTile" parent="Lava" instance=ExtResource("3_q5fiu")]
+position = Vector2(661, -4973)
+scale = Vector2(1000, 500)
+
+[node name="LavaTile2" parent="Lava" instance=ExtResource("3_q5fiu")]
+position = Vector2(11127, 5011)
+scale = Vector2(1000, 500)
+
+[node name="LavaTile3" parent="Lava" instance=ExtResource("3_q5fiu")]
+position = Vector2(-9967, 3657)
+scale = Vector2(1000, 500)
+
+[node name="LavaTile4" parent="Lava" instance=ExtResource("3_q5fiu")]
+position = Vector2(2090, 5610)
+scale = Vector2(1000, 500)
