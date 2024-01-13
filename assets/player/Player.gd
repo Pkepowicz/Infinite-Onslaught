@@ -10,6 +10,7 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var id : int
 var username : String
 @onready var attack_cooldown = $GunRotation/Timer
+@onready var animator = $AnimationPlayer
 
 var sync_pos = Vector2(0,0)
 var sync_rot = 0
@@ -67,6 +68,7 @@ func _on_hit_box_update_color_signal(clr, after_hit):
 	if after_hit:
 		inner.modulate = flash_color
 		outer.modulate = flash_color
+		animator.play("hit")
 		await get_tree().create_timer(flash_timeout).timeout
 	inner.modulate = clr
 	outer.modulate = clr
