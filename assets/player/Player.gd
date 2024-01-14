@@ -14,7 +14,8 @@ var username : String
 var sync_pos = Vector2(0,0)
 var sync_rot = 0
 
-@export var bullet : PackedScene
+@export var basic_bullet : PackedScene
+@onready var bullet = basic_bullet
 
 func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())
@@ -58,6 +59,10 @@ func Fire():
 	b.global_position = $GunRotation/BulletSpawn.global_position
 	b.rotation_degrees = $GunRotation.rotation_degrees
 	get_tree().root.add_child(b)
+	bullet = basic_bullet
+	
+func set_bullet(obj: PackedScene):
+	bullet = obj
 
 func _on_hit_box_update_color_signal(clr):
 	var inner: Sprite2D = $Graphics/Inner
@@ -74,3 +79,5 @@ func _on_hit_box_player_death(last_hit):
 		if last_hit:
 			get_parent().update_player_scores(last_hit.to_int())
 	queue_free()
+
+

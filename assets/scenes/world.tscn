@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://cmneeqglrbfky"]
+[gd_scene load_steps=30 format=3 uid="uid://cmneeqglrbfky"]
 
 [ext_resource type="Script" path="res://assets/scenes/world.gd" id="1_e253m"]
 [ext_resource type="Shader" path="res://assets/Client/background.gdshader" id="2_5jmin"]
@@ -12,6 +12,7 @@
 [ext_resource type="Script" path="res://assets/Countdowns/Endgame_countdown.gd" id="7_y01s1"]
 [ext_resource type="PackedScene" uid="uid://byf36axd6qbvi" path="res://assets/PickUps/PickupObjectsToPutOnGround/ShieldPickup.tscn" id="8_4vx0s"]
 [ext_resource type="Script" path="res://assets/Countdowns/Game_countdown.gd" id="9_sop3o"]
+[ext_resource type="PackedScene" uid="uid://bae3xw6e7cgfi" path="res://assets/PickUps/PickupObjectsToPutOnGround/sucking_bullet_pickup.tscn" id="13_3x32f"]
 
 [sub_resource type="Gradient" id="Gradient_2uts8"]
 interpolation_mode = 2
@@ -370,6 +371,9 @@ replication_config = SubResource("SceneReplicationConfig_n6a03")
 
 [node name="Node2D" parent="." instance=ExtResource("8_4vx0s")]
 position = Vector2(470, 278)
+
+[node name="SuckingBulletPickup" parent="." instance=ExtResource("13_3x32f")]
+position = Vector2(872, 304)
 
 [connection signal="button_down" from="MainMenu/MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_button_down"]
 [connection signal="button_down" from="MainMenu/MainMenu/MarginContainer/VBoxContainer/JoinButton" to="." method="_on_join_button_button_down"]
