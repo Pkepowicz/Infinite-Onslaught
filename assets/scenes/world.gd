@@ -90,6 +90,8 @@ func connection_error(error : String):
 # Function called only on server when new peer connects
 func add_player(peer_id):
 	print("Connected: " + str(peer_id) )
+	if is_game_over:
+		show_starting_screen.rpc_id(peer_id)
 	create_player(peer_id)
 
 # Function called only on server when peer disconnects
@@ -172,6 +174,13 @@ func respawn_player(peer_id, seconds_to_spawn = player_respawn_time, notify_play
 	create_player(peer_id)
 	update_player_labels.rpc()
 
+@rpc("authority", "call_remote", "reliable")
+func show_starting_screen():
+	$StartingScreen.show()
+
+@rpc("authority", "call_remote", "reliable")
+func hide_starting_screen():
+	$StartingScreen.hide()
 
 @rpc("authority", "call_local", "reliable")
 func respawn_time(seconds_to_spawn):
@@ -204,7 +213,9 @@ func restart_game():
 			respawn_player(player_id.to_int(), 0, false)
 	for player_id in late_player:
 		if player_info.has(player_id):
+			hide_starting_screen.rpc_id(player_id)
 			respawn_player(player_id, 0, false)
+		late_player.erase(player_id)
 	$Level/TimerContainer.start_countdown(game_length)
 
 # Hosting server locally, mainly for debug purpose
