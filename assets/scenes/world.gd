@@ -13,7 +13,7 @@ var is_dedicated_server = false
 var is_game_over : bool
 var peer = WebSocketMultiplayerPeer.new()
 var player_info = {}
-
+var late_player = []
 
 # For hosting headless server
 func _ready():
@@ -90,7 +90,7 @@ func connection_error(error : String):
 # Function called only on server when new peer connects
 func add_player(peer_id):
 	print("Connected: " + str(peer_id) )
-	respawn_player(peer_id, 0, false)
+	create_player(peer_id)
 
 # Function called only on server when peer disconnects
 func remove_player(peer_id):
@@ -153,6 +153,9 @@ func update_player_scores(point_scorer):
 
 # Function called on server to add player instance
 func create_player(peer_id):
+	if is_game_over:
+		late_player.append(peer_id)
+		return
 	var player = Player.instantiate()
 	player.name = str(peer_id)
 	var pos = level.get_spawn()
@@ -166,13 +169,9 @@ func respawn_player(peer_id, seconds_to_spawn = player_respawn_time, notify_play
 	if notify_player:
 		respawn_time.rpc_id(peer_id, seconds_to_spawn)
 	await get_tree().create_timer(seconds_to_spawn).timeout
-	while true:
-		if is_game_over:
-			await get_tree().create_timer(0.2).timeout
-			continue
-		create_player(peer_id)
-		update_player_labels.rpc()
-		return
+	create_player(peer_id)
+	update_player_labels.rpc()
+
 
 @rpc("authority", "call_local", "reliable")
 func respawn_time(seconds_to_spawn):
@@ -201,7 +200,11 @@ func restart_game():
 	await get_tree().create_timer(game_break_lenght).timeout
 	is_game_over = false
 	for player_id in players_to_spawn:
-		respawn_player(player_id.to_int(), 0, false)
+		if player_info.has(player_id.to_int()):
+			respawn_player(player_id.to_int(), 0, false)
+	for player_id in late_player:
+		if player_info.has(player_id):
+			respawn_player(player_id, 0, false)
 	$Level/TimerContainer.start_countdown(game_length)
 
 # Hosting server locally, mainly for debug purpose
