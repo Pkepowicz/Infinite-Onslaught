@@ -10,6 +10,7 @@ extends Node2D
 const Player = preload("res://assets/player/player.tscn")
 const PORT = 2456
 var is_dedicated_server = false
+var is_game_over : bool
 var peer = WebSocketMultiplayerPeer.new()
 var player_info = {}
 
@@ -40,6 +41,7 @@ func host_server():
 	multiplayer.multiplayer_peer = peer
 	multiplayer.peer_connected.connect(add_player)
 	multiplayer.peer_disconnected.connect(remove_player)
+	is_game_over = false
 	$Level/TimerContainer.start_countdown(game_length)
 	print("Waiting for players!")
 
@@ -88,7 +90,7 @@ func connection_error(error : String):
 # Function called only on server when new peer connects
 func add_player(peer_id):
 	print("Connected: " + str(peer_id) )
-	create_player(peer_id)
+	respawn_player(peer_id, 0, false)
 
 # Function called only on server when peer disconnects
 func remove_player(peer_id):
@@ -164,8 +166,13 @@ func respawn_player(peer_id, seconds_to_spawn = player_respawn_time, notify_play
 	if notify_player:
 		respawn_time.rpc_id(peer_id, seconds_to_spawn)
 	await get_tree().create_timer(seconds_to_spawn).timeout
-	create_player(peer_id)
-	update_player_labels.rpc()
+	while true:
+		if is_game_over:
+			await get_tree().create_timer(0.2).timeout
+			continue
+		create_player(peer_id)
+		update_player_labels.rpc()
+		return
 
 @rpc("authority", "call_local", "reliable")
 func respawn_time(seconds_to_spawn):
@@ -178,6 +185,7 @@ func endgame_time(seconds_to_spawn, players_score):
 	$EndGameScreen/TimerContainer.start_countdown(seconds_to_spawn)
 	
 func restart_game():
+	is_game_over = true
 	var players = get_tree().get_nodes_in_group("Player")
 	var players_to_spawn = []
 	var players_score = []
@@ -191,6 +199,7 @@ func restart_game():
 	print(players_score)
 	endgame_time.rpc(game_break_lenght, players_score)
 	await get_tree().create_timer(game_break_lenght).timeout
+	is_game_over = false
 	for player_id in players_to_spawn:
 		respawn_player(player_id.to_int(), 0, false)
 	$Level/TimerContainer.start_countdown(game_length)
