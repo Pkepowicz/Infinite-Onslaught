@@ -212,6 +212,7 @@ text = "Join"
 layout_mode = 2
 placeholder_text = "Name"
 alignment = 1
+max_length = 8
 
 [node name="AddressEntry" type="LineEdit" parent="MainMenu/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
