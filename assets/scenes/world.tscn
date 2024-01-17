@@ -213,6 +213,7 @@ text = "Join"
 layout_mode = 2
 placeholder_text = "Name"
 alignment = 1
+max_length = 8
 
 [node name="AddressEntry" type="LineEdit" parent="MainMenu/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -262,6 +263,36 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Timer" type="Timer" parent="DeathScreen/TimerContainer/TimeLabel"]
+
+[node name="StartingScreen" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="TextureRect" type="TextureRect" parent="StartingScreen"]
+material = SubResource("ShaderMaterial_d3ab3")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("PlaceholderTexture2D_d2veb")
+
+[node name="TimerContainer" type="VBoxContainer" parent="StartingScreen"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("6_3ao1x")
+
+[node name="RespawnLabel" type="Label" parent="StartingScreen/TimerContainer"]
+layout_mode = 2
+text = "Game will start soon..."
 
 [node name="EndGameScreen" type="CanvasLayer" parent="."]
 visible = false
