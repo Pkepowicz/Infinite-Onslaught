@@ -16,6 +16,7 @@ var sync_rot = 0
 
 @export var basic_bullet : PackedScene
 @onready var bullet = basic_bullet
+var last_velocity : Vector2 = Vector2.ZERO
 
 func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())
@@ -40,16 +41,18 @@ func _physics_process(delta):
 	
 	sync_pos = global_position
 	sync_rot = $GunRotation.rotation_degrees
+	velocity -= last_velocity
 	var direction_x = Input.get_axis("ui_left", "ui_right")
 	var direction_y = Input.get_axis("ui_up", "ui_down")
 	if direction_x:
-		velocity.x = direction_x * SPEED
+		velocity.x += direction_x * SPEED
 	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
+		velocity.x += move_toward(velocity.x, 0, SPEED)
 	if direction_y:
-		velocity.y = direction_y * SPEED
+		velocity.y += direction_y * SPEED
 	else:
-		velocity.y = move_toward(velocity.y, 0, SPEED)
+		velocity.y += move_toward(velocity.y, 0, SPEED)
+	last_velocity = velocity
 	move_and_slide()
 
 @rpc("any_peer", "call_local")
