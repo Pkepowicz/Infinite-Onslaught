@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://cmneeqglrbfky"]
+[gd_scene load_steps=42 format=3 uid="uid://cmneeqglrbfky"]
 
 [ext_resource type="Script" path="res://assets/scenes/world.gd" id="1_e253m"]
 [ext_resource type="Shader" path="res://assets/Client/background.gdshader" id="2_5jmin"]
@@ -14,6 +14,7 @@
 [ext_resource type="Script" path="res://assets/Countdowns/Game_countdown.gd" id="9_sop3o"]
 [ext_resource type="PackedScene" uid="uid://g23rteqp6j58" path="res://assets/Levels/powerup_spawn_point.tscn" id="12_se7o4"]
 [ext_resource type="PackedScene" uid="uid://bae3xw6e7cgfi" path="res://assets/PickUps/PickupObjectsToPutOnGround/sucking_bullet_pickup.tscn" id="13_3x32f"]
+[ext_resource type="Script" path="res://assets/scenes/PowerupSpawnPointManager.gd" id="13_c02rk"]
 [ext_resource type="Shader" path="res://assets/Utils/shockwave.gdshader" id="13_nogt7"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tjdjq"]
@@ -570,17 +571,18 @@ vertical_alignment = 1
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="Level"]
 replication_config = SubResource("SceneReplicationConfig_n6a03")
 
-[node name="PoweupSpawnPoints" type="Node" parent="Level"]
+[node name="PoweupSpawnPoints" type="Node2D" parent="Level"]
+script = ExtResource("13_c02rk")
 
-[node name="powerup_spawn_point" parent="Level/PoweupSpawnPoints" instance=ExtResource("12_se7o4")]
+[node name="powerup_spawn_point" parent="Level/PoweupSpawnPoints" groups=["powerup_spawner"] instance=ExtResource("12_se7o4")]
 position = Vector2(337, 355)
 possible_pickups = Array[PackedScene]([ExtResource("8_4vx0s"), ExtResource("13_3x32f")])
 
-[node name="powerup_spawn_point2" parent="Level/PoweupSpawnPoints" instance=ExtResource("12_se7o4")]
+[node name="powerup_spawn_point2" parent="Level/PoweupSpawnPoints" groups=["powerup_spawner"] instance=ExtResource("12_se7o4")]
 position = Vector2(900, 397)
 possible_pickups = Array[PackedScene]([ExtResource("8_4vx0s"), ExtResource("13_3x32f")])
 
-[node name="powerup_spawn_point3" parent="Level/PoweupSpawnPoints" instance=ExtResource("12_se7o4")]
+[node name="powerup_spawn_point3" parent="Level/PoweupSpawnPoints" groups=["powerup_spawner"] instance=ExtResource("12_se7o4")]
 position = Vector2(656, 367)
 possible_pickups = Array[PackedScene]([ExtResource("8_4vx0s"), ExtResource("13_3x32f")])
 

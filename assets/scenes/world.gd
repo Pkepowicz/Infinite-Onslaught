@@ -43,6 +43,7 @@ func host_server():
 	multiplayer.peer_connected.connect(add_player)
 	multiplayer.peer_disconnected.connect(remove_player)
 	is_game_over = false
+	$Level/PoweupSpawnPoints.start_spawning()
 	$Level/TimerContainer.start_countdown(game_length)
 	print("Waiting for players!")
 
@@ -94,6 +95,7 @@ func add_player(peer_id):
 	if is_game_over:
 		show_starting_screen.rpc_id(peer_id)
 	create_player(peer_id)
+	$Level/PoweupSpawnPoints.sync_existing_powerups(peer_id)
 
 # Function called only on server when peer disconnects
 func remove_player(peer_id):
