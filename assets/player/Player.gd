@@ -15,7 +15,10 @@ var username : String
 var sync_pos = Vector2(0,0)
 var sync_rot = 0
 
-@export var bullet : PackedScene
+var last_velocity : Vector2 = Vector2.ZERO
+@export var basic_bullet : PackedScene
+@onready var bullet = basic_bullet
+var last_velocity : Vector2 = Vector2.ZERO
 @export var flash_color : Color
 @export var flash_timeout : float
 
@@ -42,16 +45,18 @@ func _physics_process(delta):
 	
 	sync_pos = global_position
 	sync_rot = $GunRotation.rotation_degrees
+	velocity -= last_velocity
 	var direction_x = Input.get_axis("ui_left", "ui_right")
 	var direction_y = Input.get_axis("ui_up", "ui_down")
 	if direction_x:
-		velocity.x = direction_x * SPEED
+		velocity.x += direction_x * SPEED
 	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
+		velocity.x += move_toward(velocity.x, 0, SPEED)
 	if direction_y:
-		velocity.y = direction_y * SPEED
+		velocity.y += direction_y * SPEED
 	else:
-		velocity.y = move_toward(velocity.y, 0, SPEED)
+		velocity.y += move_toward(velocity.y, 0, SPEED)
+	last_velocity = velocity
 	move_and_slide()
 
 @rpc("any_peer", "call_local")
@@ -61,6 +66,10 @@ func Fire():
 	b.global_position = $GunRotation/BulletSpawn.global_position
 	b.rotation_degrees = $GunRotation.rotation_degrees
 	get_tree().root.add_child(b)
+	bullet = basic_bullet
+	
+func set_bullet(obj: PackedScene):
+	bullet = obj
 
 func _on_hit_box_update_color_signal(clr, after_hit):
 	var inner: Sprite2D = $Graphics/Inner
@@ -83,3 +92,5 @@ func _on_hit_box_player_death(last_hit):
 		if last_hit:
 			get_parent().update_player_scores(last_hit.to_int())
 	queue_free()
+
+

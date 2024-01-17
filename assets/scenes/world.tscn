@@ -14,6 +14,7 @@
 [ext_resource type="Script" path="res://assets/Countdowns/Game_countdown.gd" id="9_sop3o"]
 [ext_resource type="Shader" path="res://assets/Utils/shockwave.gdshader" id="13_nogt7"]
 [ext_resource type="PackedScene" uid="uid://g23rteqp6j58" path="res://assets/Levels/powerup_spawn_point.tscn" id="12_se7o4"]
+[ext_resource type="PackedScene" uid="uid://bae3xw6e7cgfi" path="res://assets/PickUps/PickupObjectsToPutOnGround/sucking_bullet_pickup.tscn" id="13_3x32f"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tjdjq"]
 shader = ExtResource("13_nogt7")
@@ -557,6 +558,9 @@ position = Vector2(839, 272)
 
 [node name="Node2D" parent="." instance=ExtResource("8_4vx0s")]
 position = Vector2(470, 278)
+
+[node name="SuckingBulletPickup" parent="." instance=ExtResource("13_3x32f")]
+position = Vector2(872, 304)
 
 [connection signal="button_down" from="MainMenu/MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_button_down"]
 [connection signal="button_down" from="MainMenu/MainMenu/MarginContainer/VBoxContainer/JoinButton" to="." method="_on_join_button_button_down"]
