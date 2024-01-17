@@ -17,14 +17,16 @@ func start_pickup_generation_random_timer():
 
 
 func _on_timer_timeout():
-	rpc("spawn_powerup")
+	if multiplayer.is_server():
+		var powerup_to_spawn = randi() % possible_pickups.size()
+		spawn_powerup.rpc(powerup_to_spawn)
 	
 @rpc("call_local")
-func spawn_powerup():
+func spawn_powerup(num):
 	# instanciate powerup here
 	print("timer ran out, trying to spawn pickup", name)
-	var powerup_to_spawn = possible_pickups[randi() % possible_pickups.size()].instantiate()
-	add_child(powerup_to_spawn)
+	var powerup = possible_pickups[num].instantiate()
+	add_child(powerup)
 
 
 func _on_area_2d_area_exited(area: Area2D) -> void:
