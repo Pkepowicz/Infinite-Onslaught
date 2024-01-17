@@ -36,11 +36,10 @@ func _physics_process(delta):
 	$GunRotation.look_at(get_viewport().get_mouse_position())
 	if Input.is_action_just_pressed("Fire") && attack_cooldown.is_stopped():
 		attack_cooldown.start()
-		print(username)
 		Fire.rpc()
 	
-	if Input.is_action_just_pressed("SpecialButton"):
-		get_parent().send_Shockwave(get_global_position())
+	#if Input.is_action_just_pressed("SpecialButton"):
+		#get_parent().send_Shockwave(get_global_position())
 	
 	sync_pos = global_position
 	sync_rot = $GunRotation.rotation_degrees
