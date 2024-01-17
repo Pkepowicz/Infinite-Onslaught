@@ -18,7 +18,6 @@ var sync_rot = 0
 var last_velocity : Vector2 = Vector2.ZERO
 @export var basic_bullet : PackedScene
 @onready var bullet = basic_bullet
-var last_velocity : Vector2 = Vector2.ZERO
 @export var flash_color : Color
 @export var flash_timeout : float
 
