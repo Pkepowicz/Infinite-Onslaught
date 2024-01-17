@@ -11,12 +11,12 @@
 | Serwer | Gra dobiegła końca gdy gracz był w ekranie odrodzenia | Znika ekran odrodzenia, procedura odradzania zostaje przerwana i pojawia się ekran podsumowania, a gracz zostaje odrodzony na początku nowej rundy |  |
 | Network | Użytkownik połączył się w czasie podsumowania | Użytkownik dostaje informacje że gra za niedługo się rozpocznie |  |
 | Network | Uzytkownik rozłączył się podczas restartowania gry | Procedura restartu gry pomija respawn obiektu gracza danego użytkownika |  |
-| Player Spawner | Użytkownik dołącza do gry lub umiera | Użytkownik pojawi sie w losowo wybranym spawn poincie |  |
-| Player Spawner | 2 Użytkowników na raz dołączy do gry lub umiera | Maksymalnie jeden użytkownik pojawi się na danym spawn poincie |  |
-| Shield Powerup | Użytkownik podniesie Shield Powerup | Wokół gracza pojawia sie niebieski okrąg |  |
-| Shield Powerup | Użytkownik podniesie Shield Powerup | Gracz będzie niewrażliwy na obrażenia przez określoną ilość czasu |  |
-| Powerup Spawner | Użytkownik podniesie powerup | Po losowo wybranym czasie w tym samym miejscu pojawi się nowy powerup |  |
-| Powerup Spawner | Użytkownik podniesie powerup | Przy kilku próbach pojawiać się będą różne powerupy |  |
-| Bullet Powerup | Użytkownik podniesie bullet powerup | Następny pocisk wystrzelony przez gracza będzie przyciągał innych graczy, a nie będzie przyciągał gracza który go wystrzelił |  |
-| Lava | Użytkownik będzie stał w lawie | Gracz zacznie dostawać obrażenia co kilka sekund, zmieni się kolor gracza |  |
+| Player Spawner | Użytkownik dołącza do gry lub umiera | Użytkownik pojawi sie w losowo wybranym spawn poincie | ✓ |
+| Player Spawner | 2 Użytkowników na raz dołączy do gry lub umiera | Maksymalnie jeden użytkownik pojawi się na danym spawn poincie | ✓ |
+| Shield Powerup | Użytkownik podniesie Shield Powerup | Wokół gracza pojawia sie niebieski okrąg | ✓ |
+| Shield Powerup | Użytkownik podniesie Shield Powerup | Gracz będzie niewrażliwy na obrażenia przez określoną ilość czasu | ✓ |
+| Powerup Spawner | Użytkownik podniesie powerup | Po losowo wybranym czasie w tym samym miejscu pojawi się nowy powerup | ✓ |
+| Powerup Spawner | Użytkownik podniesie powerup | Przy kilku próbach pojawiać się będą różne powerupy | ✓ |
+| Bullet Powerup | Użytkownik podniesie bullet powerup | Następny pocisk wystrzelony przez gracza będzie przyciągał innych graczy, a nie będzie przyciągał gracza który go wystrzelił | ✓ |
+| Lava | Użytkownik będzie stał w lawie | Gracz zacznie dostawać obrażenia co kilka sekund, zmieni się kolor gracza | ✓ |
 |  |  |  |  |
