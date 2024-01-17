@@ -10,13 +10,17 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var id : int
 var username : String
 @onready var attack_cooldown = $GunRotation/Timer
+@onready var animator = $AnimationPlayer
 
 var sync_pos = Vector2(0,0)
 var sync_rot = 0
 
+var last_velocity : Vector2 = Vector2.ZERO
 @export var basic_bullet : PackedScene
 @onready var bullet = basic_bullet
 var last_velocity : Vector2 = Vector2.ZERO
+@export var flash_color : Color
+@export var flash_timeout : float
 
 func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())
@@ -37,7 +41,7 @@ func _physics_process(delta):
 		Fire.rpc()
 	
 	if Input.is_action_just_pressed("SpecialButton"):
-		print(get_parent().player_info)
+		get_parent().send_Shockwave(get_global_position())
 	
 	sync_pos = global_position
 	sync_rot = $GunRotation.rotation_degrees
@@ -67,9 +71,14 @@ func Fire():
 func set_bullet(obj: PackedScene):
 	bullet = obj
 
-func _on_hit_box_update_color_signal(clr):
+func _on_hit_box_update_color_signal(clr, after_hit):
 	var inner: Sprite2D = $Graphics/Inner
 	var outer: Sprite2D = $Graphics/Outer
+	if after_hit:
+		inner.modulate = flash_color
+		outer.modulate = flash_color
+		animator.play("hit")
+		await get_tree().create_timer(flash_timeout).timeout
 	inner.modulate = clr
 	outer.modulate = clr
 
@@ -77,6 +86,7 @@ func _on_hit_box_get_knocked_back(dir: Vector2) -> void:
 	velocity += dir * 2000
 
 func _on_hit_box_player_death(last_hit):
+	get_parent().send_Shockwave(get_global_position())
 	if multiplayer.is_server():
 		get_parent().respawn_player(str(name).to_int())
 		if last_hit:
