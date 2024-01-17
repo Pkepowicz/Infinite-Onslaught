@@ -25,7 +25,7 @@ func _on_timer_timeout():
 		last_num = randi() % possible_pickups.size()
 		spawn_powerup.rpc(last_num)
 	
-@rpc("call_local")
+@rpc("call_local", "reliable")
 func spawn_powerup(num):
 	# instanciate powerup here
 	print("timer ran out, trying to spawn pickup", name)
