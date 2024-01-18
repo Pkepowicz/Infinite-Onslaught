@@ -110,7 +110,7 @@ func on_player_connected():
 	var username = $MainMenu/MainMenu/MarginContainer/VBoxContainer/NameEntry.text
 	var id = multiplayer.get_unique_id()
 	sync_player_info.rpc_id(1, username, id)
-
+ 
 # Function that syncs player info dict across all hosts
 # Synchronization is initiated by new peer during on_player_connected
 # Server gets information from new peer,
@@ -133,6 +133,9 @@ func sync_player_info(username, id):
 func sync_player_score(id, score):
 	player_info[id].score = score
 	
+@rpc("authority", "call_local", "reliable")
+func hide_death_screen():
+	$DeathScreen.hide()
 
 # Function used by server to notify client of his player's position on startup
 @rpc("authority", "call_local")
@@ -209,6 +212,7 @@ func restart_game():
 	players_score.sort_custom(comparePlayers)
 	print(players_score)
 	endgame_time.rpc(game_break_lenght, players_score)
+	hide_death_screen.rpc()
 	await get_tree().create_timer(game_break_lenght).timeout
 	is_game_over = false
 	for player_id in players_to_spawn:
