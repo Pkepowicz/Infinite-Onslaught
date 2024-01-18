@@ -126,7 +126,7 @@ replication_interval = 0.05
 replication_config = SubResource("SceneReplicationConfig_g3wg3")
 
 [node name="HitBox" parent="." instance=ExtResource("4_661v0")]
-max_hp = 5
+max_hp = 8
 
 [node name="Area2D" parent="HitBox" index="0" groups=["Player_hitbox"]]
 

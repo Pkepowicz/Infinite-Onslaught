@@ -1,6 +1,6 @@
 extends Node2D
 
-@export var max_hp: int = 5
+@export var max_hp: int = 8
 @onready var collision = $Area2D/CollisionShape2D
 @onready var bleed_particles = preload("res://assets/Utils/particles/bleed_particles.tscn")
 
