@@ -2,9 +2,13 @@ extends Node2D
 
 @export var possible_pickups: Array[PackedScene]
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	start_pickup_generation_random_timer()
+var last_num : int = -1
+	
+# Called on server
+func sync_existing_powerup(peer_id):
+	print("Spawner sends actual pickup")
+	if get_child_count() != 0 and last_num != -1:
+		spawn_powerup.rpc_id(peer_id, last_num)
 	
 func start_pickup_generation_random_timer():
 	# choose random time for timer, when it runs out spawn pickup 
@@ -17,14 +21,16 @@ func start_pickup_generation_random_timer():
 
 
 func _on_timer_timeout():
-	rpc("spawn_powerup")
+	if multiplayer.is_server():
+		last_num = randi() % possible_pickups.size()
+		spawn_powerup.rpc(last_num)
 	
-@rpc("call_local")
-func spawn_powerup():
+@rpc("call_local", "reliable")
+func spawn_powerup(num):
 	# instanciate powerup here
 	print("timer ran out, trying to spawn pickup", name)
-	var powerup_to_spawn = possible_pickups[randi() % possible_pickups.size()].instantiate()
-	add_child(powerup_to_spawn)
+	var powerup = possible_pickups[num].instantiate()
+	add_child(powerup)
 
 
 func _on_area_2d_area_exited(area: Area2D) -> void:

@@ -43,6 +43,7 @@ func host_server():
 	multiplayer.peer_connected.connect(add_player)
 	multiplayer.peer_disconnected.connect(remove_player)
 	is_game_over = false
+	$Level/PoweupSpawnPoints.start_spawning()
 	$Level/TimerContainer.start_countdown(game_length)
 	print("Waiting for players!")
 
@@ -94,6 +95,7 @@ func add_player(peer_id):
 	if is_game_over:
 		show_starting_screen.rpc_id(peer_id)
 	create_player(peer_id)
+	$Level/PoweupSpawnPoints.sync_existing_powerups(peer_id)
 
 # Function called only on server when peer disconnects
 func remove_player(peer_id):
@@ -108,7 +110,7 @@ func on_player_connected():
 	var username = $MainMenu/MainMenu/MarginContainer/VBoxContainer/NameEntry.text
 	var id = multiplayer.get_unique_id()
 	sync_player_info.rpc_id(1, username, id)
-
+ 
 # Function that syncs player info dict across all hosts
 # Synchronization is initiated by new peer during on_player_connected
 # Server gets information from new peer,
@@ -131,6 +133,9 @@ func sync_player_info(username, id):
 func sync_player_score(id, score):
 	player_info[id].score = score
 	
+@rpc("authority", "call_local", "reliable")
+func hide_death_screen():
+	$DeathScreen.hide()
 
 # Function used by server to notify client of his player's position on startup
 @rpc("authority", "call_local")
@@ -207,6 +212,7 @@ func restart_game():
 	players_score.sort_custom(comparePlayers)
 	print(players_score)
 	endgame_time.rpc(game_break_lenght, players_score)
+	hide_death_screen.rpc()
 	await get_tree().create_timer(game_break_lenght).timeout
 	is_game_over = false
 	for player_id in players_to_spawn:

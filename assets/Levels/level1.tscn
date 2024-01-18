@@ -12,9 +12,6 @@ script = ExtResource("1_hio7e")
 [node name="SpawnPoint" parent="SpawnPoints" instance=ExtResource("2_jop0o")]
 position = Vector2(116, 87)
 
-[node name="SpawnPoint2" parent="SpawnPoints" instance=ExtResource("2_jop0o")]
-position = Vector2(1058, 542)
-
 [node name="SpawnPoint3" parent="SpawnPoints" instance=ExtResource("2_jop0o")]
 position = Vector2(101, 553)
 

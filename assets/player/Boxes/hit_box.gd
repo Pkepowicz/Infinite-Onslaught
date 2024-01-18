@@ -4,7 +4,7 @@ extends Node2D
 @onready var collision = $Area2D/CollisionShape2D
 @onready var bleed_particles = preload("res://assets/Utils/particles/bleed_particles.tscn")
 
-var hp: int
+@export var hp: int
 var parent: Node
 var immune: bool = false
 var last_hit
