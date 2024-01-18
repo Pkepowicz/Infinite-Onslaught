@@ -12,12 +12,3 @@ func get_spawn():
 		if point.can_spawn_here():
 			return point.global_position
 
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	print(spawn_points.size())
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
