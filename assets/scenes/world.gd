@@ -54,9 +54,10 @@ func _on_join_button_button_down():
 	$MainMenu/Loading.show()
 	
 	var is_connected = false
-	var client_trusted_cas = load("res://assets/Keys/server.crt")
-	var client_tls_options = TLSOptions.client_unsafe(client_trusted_cas)
-	var error = peer.create_client("wss://" + address_entry.text + ":" + str(PORT))
+	#var client_trusted_cas = load("res://assets/Keys/server.crt")
+	#var client_tls_options = TLSOptions.client_unsafe(client_trusted_cas)
+	#var error = peer.create_client("wss://" + address_entry.text + ":" + str(PORT))
+	var error = peer.create_client(address_entry.text + ":" + str(PORT))
 	multiplayer.multiplayer_peer = peer
 	# Checking errors during socket creation
 	if error != OK && error != ERR_ALREADY_IN_USE:

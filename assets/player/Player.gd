@@ -20,42 +20,43 @@ var last_velocity : Vector2 = Vector2.ZERO
 @onready var bullet = basic_bullet
 @export var flash_color : Color
 @export var flash_timeout : float
+@export var vel : Vector2
+@onready var input = $PlayerInput
+
 
 func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())
-	
+
 func update_label():
 	username = get_parent().player_info[str(name).to_int()].username
 	$Username.text = username
 	
 func _physics_process(delta):
-	if not is_multiplayer_authority():
-		global_position = global_position.lerp(sync_pos, 0.4)
-		$GunRotation.rotation_degrees = lerpf($GunRotation.rotation_degrees, sync_rot, 0.4)
-		return
-	$GunRotation.look_at(get_viewport().get_mouse_position())
-	if Input.is_action_just_pressed("Fire") && attack_cooldown.is_stopped():
-		attack_cooldown.start()
-		Fire.rpc()
+	#if not is_multiplayer_authority():
+		#global_position = global_position.lerp(sync_pos, 0.4)
+		#$GunRotation.rotation_degrees = lerpf($GunRotation.rotation_degrees, sync_rot, 0.4)
+		#return
+	#$GunRotation.look_at(get_viewport().get_mouse_position())
+	#if Input.is_action_just_pressed("Fire") && attack_cooldown.is_stopped():
+		#attack_cooldown.start()
+		#Fire.rpc()
 	
 	#if Input.is_action_just_pressed("SpecialButton"):
 		#get_parent().send_Shockwave(get_global_position())
 	
-	sync_pos = global_position
-	sync_rot = $GunRotation.rotation_degrees
-	velocity -= last_velocity
-	var direction_x = Input.get_axis("ui_left", "ui_right")
-	var direction_y = Input.get_axis("ui_up", "ui_down")
-	if direction_x:
-		velocity.x += direction_x * SPEED
+	#sync_pos = global_position
+	#sync_rot = $GunRotation.rotation_degrees
+
+	var direction = (Vector2(input.direction.x, input.direction.y)).normalized()
+	if direction:
+		velocity.x = direction.x * SPEED
+		velocity.y = direction.y * SPEED
 	else:
-		velocity.x += move_toward(velocity.x, 0, SPEED)
-	if direction_y:
-		velocity.y += direction_y * SPEED
-	else:
-		velocity.y += move_toward(velocity.y, 0, SPEED)
-	last_velocity = velocity
+		velocity.x = move_toward(velocity.x, 0, SPEED)
+		velocity.y = move_toward(velocity.y, 0, SPEED)
+
 	move_and_slide()
+
 
 @rpc("any_peer", "call_local")
 func Fire():
