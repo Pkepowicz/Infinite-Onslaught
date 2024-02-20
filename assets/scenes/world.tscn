@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://cmneeqglrbfky"]
+[gd_scene load_steps=46 format=3 uid="uid://cmneeqglrbfky"]
 
 [ext_resource type="Script" path="res://assets/scenes/world.gd" id="1_e253m"]
 [ext_resource type="Shader" path="res://assets/Client/background.gdshader" id="2_5jmin"]
@@ -12,6 +12,8 @@
 [ext_resource type="PackedScene" uid="uid://byf36axd6qbvi" path="res://assets/PickUps/PickupObjectsToPutOnGround/ShieldPickup.tscn" id="8_4vx0s"]
 [ext_resource type="Script" path="res://assets/Countdowns/Game_countdown.gd" id="9_sop3o"]
 [ext_resource type="Script" path="res://assets/Levels/level.gd" id="10_dyfoe"]
+[ext_resource type="Texture2D" uid="uid://iinw1x66wojq" path="res://assets/Client/UI/Background.png" id="11_ffcv6"]
+[ext_resource type="Shader" path="res://assets/Client/UI/background.gdshader" id="11_h3eho"]
 [ext_resource type="PackedScene" uid="uid://g23rteqp6j58" path="res://assets/Levels/powerup_spawn_point.tscn" id="12_se7o4"]
 [ext_resource type="PackedScene" uid="uid://bae3xw6e7cgfi" path="res://assets/PickUps/PickupObjectsToPutOnGround/sucking_bullet_pickup.tscn" id="13_3x32f"]
 [ext_resource type="Script" path="res://assets/scenes/PowerupSpawnPointManager.gd" id="13_c02rk"]
@@ -184,6 +186,10 @@ shader = ExtResource("2_5jmin")
 [sub_resource type="LabelSettings" id="LabelSettings_qhaom"]
 line_spacing = 12.0
 font_size = 25
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1t3of"]
+shader = ExtResource("11_h3eho")
+shader_parameter/speed = -0.3
 
 [sub_resource type="Image" id="Image_6w7ld"]
 data = {
@@ -505,6 +511,30 @@ vertical_alignment = 1
 [node name="Level" type="Node2D" parent="."]
 visible = false
 script = ExtResource("10_dyfoe")
+
+[node name="Background" type="Control" parent="Level"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ColorRect" type="ColorRect" parent="Level/Background"]
+layout_mode = 0
+offset_left = -99.0
+offset_top = -168.0
+offset_right = 1463.0
+offset_bottom = 879.0
+color = Color(0.341176, 0.121569, 0, 1)
+
+[node name="TextureRect" type="TextureRect" parent="Level/Background"]
+material = SubResource("ShaderMaterial_1t3of")
+offset_left = -106.0
+offset_top = -173.0
+offset_right = 15624.0
+offset_bottom = 10617.0
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("11_ffcv6")
+stretch_mode = 1
 
 [node name="SpawnPoints" type="Node" parent="Level"]
 
