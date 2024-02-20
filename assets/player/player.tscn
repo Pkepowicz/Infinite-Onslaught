@@ -157,7 +157,7 @@ shape = SubResource("CircleShape2D_6xo8u")
 shape = SubResource("CircleShape2D_l3i7q")
 
 [node name="Lava_Timer" type="Timer" parent="HitBox/PlayerCenter"]
-wait_time = 0.3
+wait_time = 0.25
 autostart = true
 
 [node name="BleedParticles" type="GPUParticles2D" parent="HitBox"]

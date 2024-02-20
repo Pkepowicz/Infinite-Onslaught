@@ -12,7 +12,7 @@ func sync_existing_powerup(peer_id):
 	
 func start_pickup_generation_random_timer():
 	# choose random time for timer, when it runs out spawn pickup 
-	if(!multiplayer.is_server()):
+	if not multiplayer.is_server():
 		return
 	var random_first_spawn_time = randi() % 5 + 5
 	print("random time chosen: ", random_first_spawn_time)
@@ -23,10 +23,10 @@ func _on_timer_timeout():
 		last_num = randi() % possible_pickups.size()
 		spawn_powerup.rpc(last_num)
 	
-@rpc("call_local", "reliable")
+@rpc("authority", "call_local", "reliable")
 func spawn_powerup(num):
 	# instanciate powerup here
-	print("timer ran out, trying to spawn pickup", name)
+	print("timer ran out, trying to spawn pickup ", name)
 	var powerup = possible_pickups[num].instantiate()
 	add_child(powerup)
 
