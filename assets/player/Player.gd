@@ -27,6 +27,11 @@ var last_velocity : Vector2 = Vector2.ZERO
 func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())
 
+func _ready():
+	set_physics_process(multiplayer.is_server())
+	$ServerSync.set_multiplayer_authority(1)
+	$HitBox.set_multiplayer_authority(1)
+	
 func update_label():
 	username = get_parent().player_info[str(name).to_int()].username
 	$Username.text = username
@@ -36,10 +41,12 @@ func _physics_process(delta):
 		#global_position = global_position.lerp(sync_pos, 0.4)
 		#$GunRotation.rotation_degrees = lerpf($GunRotation.rotation_degrees, sync_rot, 0.4)
 		#return
-	#$GunRotation.look_at(get_viewport().get_mouse_position())
-	#if Input.is_action_just_pressed("Fire") && attack_cooldown.is_stopped():
-		#attack_cooldown.start()
-		#Fire.rpc()
+	$GunRotation.look_at(input.mouse_position)
+	if input.shooting && attack_cooldown.is_stopped():
+		attack_cooldown.start()
+		Fire.rpc()
+	
+	input.shooting = false
 	
 	#if Input.is_action_just_pressed("SpecialButton"):
 		#get_parent().send_Shockwave(get_global_position())
