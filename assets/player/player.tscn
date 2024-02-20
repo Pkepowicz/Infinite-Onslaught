@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://ikci0cwvea7n"]
+[gd_scene load_steps=19 format=3 uid="uid://ikci0cwvea7n"]
 
 [ext_resource type="Script" path="res://assets/player/Player.gd" id="1_sjxtg"]
 [ext_resource type="PackedScene" uid="uid://hhg0e3ylkxlg" path="res://assets/player/weapons/bullet.tscn" id="2_3wu67"]
@@ -36,6 +36,9 @@ properties/2/replication_mode = 1
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6xo8u"]
 radius = 108.167
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_l3i7q"]
+radius = 33.4996
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_vwrsd"]
 particle_flag_disable_z = true
@@ -148,6 +151,15 @@ max_hp = 8
 [node name="CollisionShape2D" parent="HitBox/Area2D" index="0"]
 shape = SubResource("CircleShape2D_6xo8u")
 
+[node name="PlayerCenter" type="Area2D" parent="HitBox"]
+
+[node name="PlayerCenter" type="CollisionShape2D" parent="HitBox/PlayerCenter"]
+shape = SubResource("CircleShape2D_l3i7q")
+
+[node name="Lava_Timer" type="Timer" parent="HitBox/PlayerCenter"]
+wait_time = 0.3
+autostart = true
+
 [node name="BleedParticles" type="GPUParticles2D" parent="HitBox"]
 emitting = false
 amount = 18
@@ -184,6 +196,7 @@ libraries = {
 [connection signal="get_knocked_back" from="HitBox" to="." method="_on_hit_box_get_knocked_back"]
 [connection signal="player_death" from="HitBox" to="." method="_on_hit_box_player_death"]
 [connection signal="update_color_signal" from="HitBox" to="." method="_on_hit_box_update_color_signal"]
+[connection signal="timeout" from="HitBox/PlayerCenter/Lava_Timer" to="HitBox" method="_on_lava_timer_timeout"]
 
 [editable path="HitBox"]
 [editable path="PickupComponent"]

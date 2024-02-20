@@ -7,6 +7,7 @@ extends Node2D
 @export var hp: int
 var parent: Node
 var immune: bool = false
+var lava_immune : bool = true
 var last_hit
 
 signal update_color_signal(clr: Color)
@@ -27,6 +28,21 @@ func _ready():
 	hp = max_hp
 	parent = get_parent()
 	update_color(false)
+
+func _physics_process(delta):
+	if not multiplayer.is_server():
+		return
+		
+	var overlapping_areas = $PlayerCenter.get_overlapping_areas()
+	for area in overlapping_areas:
+		if area.is_in_group("Ground"):
+			return
+	if not lava_immune:
+		var dmg: Damage = Damage.new()
+		dmg.dmg = 1
+		take_damage(dmg)
+		lava_immune = true
+		$PlayerCenter/Lava_Timer.start()
 
 func take_damage(dmg: Damage):	
 	if immune || not multiplayer.is_server():
@@ -50,3 +66,6 @@ func take_damage(dmg: Damage):
 
 func _on_timer_timeout() -> void:
 	collision.call_deferred("set", "disabled", false)
+
+func _on_lava_timer_timeout():
+	lava_immune = false
