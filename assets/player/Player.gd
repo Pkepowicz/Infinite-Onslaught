@@ -11,6 +11,7 @@ var id : int
 var username : String
 @onready var attack_cooldown = $GunRotation/Timer
 @onready var animator = $AnimationPlayer
+@onready var bleed_particles = preload("res://assets/Utils/particles/bleed_particles.tscn")
 
 var sync_pos = Vector2(0,0)
 var sync_rot = 0
@@ -77,26 +78,37 @@ func Fire():
 func set_bullet(obj: PackedScene):
 	bullet = obj
 
+# only on server
 func _on_hit_box_update_color_signal(clr, after_hit):
+	update_color.rpc(clr, after_hit)
+
+@rpc("any_peer", "call_local", "reliable")
+func update_color(clr, after_hit):
 	var inner: Sprite2D = $Graphics/Inner
 	var outer: Sprite2D = $Graphics/Outer
 	if after_hit:
 		inner.modulate = flash_color
 		outer.modulate = flash_color
 		animator.play("hit")
+		var p = bleed_particles.instantiate()
+		p.global_position = global_position
+		get_tree().root.add_child(p)
 		await get_tree().create_timer(flash_timeout).timeout
 	inner.modulate = clr
 	outer.modulate = clr
 
-func _on_hit_box_get_knocked_back(dir: Vector2) -> void:
-	velocity += dir * 2000
+# only on server
+func _on_hit_box_get_knocked_back(dir: Vector2):
+	velocity += dir * 1000
 
+# only on server
 func _on_hit_box_player_death(last_hit):
+	player_death.rpc()
+	get_parent().respawn_player(str(name).to_int())
+	if last_hit:
+		get_parent().update_player_scores(last_hit.to_int())
+
+@rpc("any_peer", "call_local", "reliable")
+func player_death():
 	get_parent().send_Shockwave(get_global_position())
-	if multiplayer.is_server():
-		get_parent().respawn_player(str(name).to_int())
-		if last_hit:
-			get_parent().update_player_scores(last_hit.to_int())
 	queue_free()
-
-

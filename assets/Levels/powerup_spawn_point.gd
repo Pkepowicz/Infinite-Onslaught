@@ -18,8 +18,6 @@ func start_pickup_generation_random_timer():
 	print("random time chosen: ", random_first_spawn_time)
 	$Timer.start(random_first_spawn_time)
 
-
-
 func _on_timer_timeout():
 	if multiplayer.is_server():
 		last_num = randi() % possible_pickups.size()

@@ -2,7 +2,7 @@ extends Node2D
 
 @export var max_hp: int = 8
 @onready var collision = $Area2D/CollisionShape2D
-@onready var bleed_particles = preload("res://assets/Utils/particles/bleed_particles.tscn")
+
 
 @export var hp: int
 var parent: Node
@@ -29,7 +29,7 @@ func _ready():
 	update_color(false)
 
 func take_damage(dmg: Damage):	
-	if immune:
+	if immune || not multiplayer.is_server():
 		return
 	hp -= dmg.dmg
 	var knockback_coefficient = (float(max_hp - hp) / max_hp)
@@ -39,10 +39,6 @@ func take_damage(dmg: Damage):
 	
 	collision.call_deferred("set", "disabled", true)
 	$Timer.start()
-	
-	var p = bleed_particles.instantiate()
-	p.global_position = global_position
-	get_tree().root.add_child(p)
 	
 	if knockback != Vector2.ZERO:
 		get_knocked_back.emit(knockback)
