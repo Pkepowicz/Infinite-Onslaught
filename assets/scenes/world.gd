@@ -12,7 +12,7 @@ const Player = preload("res://assets/player/player.tscn")
 const PORT = 2456
 var is_dedicated_server = false
 var is_game_over : bool
-var peer = WebSocketMultiplayerPeer.new()
+var peer = ENetMultiplayerPeer.new()
 var player_info = {}
 var late_player = []
 
@@ -30,15 +30,15 @@ func host_server():
 	$MainMenu.hide()
 	level.show()
 	
-	if '--server' in OS.get_cmdline_args():
-		var server_certs = load("res://assets/Keys/server.crt")
-		var server_key = load("res://assets/Keys/server.key")
-		var server_tls_options = TLSOptions.server(server_key, server_certs)
-		peer.create_server(PORT, "*", server_tls_options)
+	#if '--server' in OS.get_cmdline_args():
+		#var server_certs = load("res://assets/Keys/server.crt")
+		#var server_key = load("res://assets/Keys/server.key")
+		#var server_tls_options = TLSOptions.server(server_key, server_certs)
+		#peer.create_server(PORT, "*", server_tls_options)
+		##peer.create_server(PORT)
+	#else:
 		#peer.create_server(PORT)
-	else:
-		peer.create_server(PORT)
-	
+	peer.create_server(PORT)
 	multiplayer.multiplayer_peer = peer
 	multiplayer.peer_connected.connect(add_player)
 	multiplayer.peer_disconnected.connect(remove_player)
@@ -57,7 +57,7 @@ func _on_join_button_button_down():
 	#var client_trusted_cas = load("res://assets/Keys/server.crt")
 	#var client_tls_options = TLSOptions.client_unsafe(client_trusted_cas)
 	#var error = peer.create_client("wss://" + address_entry.text + ":" + str(PORT))
-	var error = peer.create_client(address_entry.text + ":" + str(PORT))
+	var error = peer.create_client(address_entry.text, PORT)
 	multiplayer.multiplayer_peer = peer
 	# Checking errors during socket creation
 	if error != OK && error != ERR_ALREADY_IN_USE:
@@ -77,7 +77,7 @@ func _on_join_button_button_down():
 		else:
 			connection_error("Connection timed out")
 	
-func is_connection_estabilished(peer : WebSocketMultiplayerPeer):
+func is_connection_estabilished(peer : ENetMultiplayerPeer):
 	print(peer.get_connection_status())
 	if peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED:
 		return true
