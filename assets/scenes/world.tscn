@@ -434,19 +434,19 @@ offset_bottom = 40.0
 
 [node name="ColorRect" type="ColorRect" parent="Level/Background"]
 layout_mode = 0
-offset_left = -99.0
-offset_top = -168.0
-offset_right = 1463.0
-offset_bottom = 879.0
+offset_left = -4250.0
+offset_top = -4187.0
+offset_right = 6182.0
+offset_bottom = 4779.0
 color = Color(0.341176, 0.121569, 0, 1)
 
 [node name="TextureRect" type="TextureRect" parent="Level/Background"]
 material = SubResource("ShaderMaterial_1t3of")
 layout_mode = 0
-offset_left = -106.0
-offset_top = -173.0
-offset_right = 15624.0
-offset_bottom = 10617.0
+offset_left = -4256.0
+offset_top = -4130.0
+offset_right = 100164.0
+offset_bottom = 84890.0
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("11_ffcv6")
 stretch_mode = 1
