@@ -6,7 +6,7 @@ extends Node2D
 @export var game_length : int
 @export var game_break_lenght : int
 @export var player_respawn_time : int
-@onready var Shockwave = $CanvasLayer/ColorRect
+const Shockwave = preload("res://assets/Utils/shockwave/shockwave.tscn")
 
 const Player = preload("res://assets/player/player.tscn")
 const PORT = 2456
@@ -245,5 +245,6 @@ func comparePlayers(a, b):
 	return true
 
 func send_Shockwave(position):
-	Shockwave.material.set_shader_parameter("global_position", position)
-	Shockwave.get_node("AnimationPlayer").play("Shockwave")
+	var new_shockwave = Shockwave.instantiate()
+	new_shockwave.position = position
+	add_child(new_shockwave)
