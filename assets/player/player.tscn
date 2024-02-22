@@ -193,6 +193,8 @@ libraries = {
 "": SubResource("AnimationLibrary_4xr0k")
 }
 
+[node name="Camera2D" type="Camera2D" parent="."]
+
 [connection signal="get_knocked_back" from="HitBox" to="." method="_on_hit_box_get_knocked_back"]
 [connection signal="player_death" from="HitBox" to="." method="_on_hit_box_player_death"]
 [connection signal="update_color_signal" from="HitBox" to="." method="_on_hit_box_update_color_signal"]

@@ -32,6 +32,8 @@ func _ready():
 	set_physics_process(multiplayer.is_server())
 	$ServerSync.set_multiplayer_authority(1)
 	$HitBox.set_multiplayer_authority(1)
+	if multiplayer.get_unique_id() == str(name).to_int():
+		$Camera2D.make_current()
 	
 func update_label():
 	username = get_parent().player_info[str(name).to_int()].username
