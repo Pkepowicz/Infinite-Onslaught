@@ -29,6 +29,7 @@ func _process(delta):
 func host_server():
 	$MainMenu.hide()
 	level.show()
+	$GameTime.show()
 	
 	#if '--server' in OS.get_cmdline_args():
 		#var server_certs = load("res://assets/Keys/server.crt")
@@ -44,7 +45,7 @@ func host_server():
 	multiplayer.peer_disconnected.connect(remove_player)
 	is_game_over = false
 	$Level/PoweupSpawnPoints.start_spawning()
-	$Level/TimerContainer.start_countdown(game_length)
+	$GameTime/TimerContainer.start_countdown(game_length)
 	print("Waiting for players!")
 
 func _on_join_button_button_down():
@@ -74,6 +75,7 @@ func _on_join_button_button_down():
 			multiplayer.multiplayer_peer = peer
 			$MainMenu.hide()
 			level.show()
+			$GameTime.show()
 		else:
 			connection_error("Connection timed out")
 	
@@ -224,7 +226,7 @@ func restart_game():
 			hide_starting_screen.rpc_id(player_id)
 			respawn_player(player_id, 0, false)
 		late_player.erase(player_id)
-	$Level/TimerContainer.start_countdown(game_length)
+	$GameTime/TimerContainer.start_countdown(game_length)
 
 # Hosting server locally, mainly for debug purpose
 func _on_host_button_button_down():

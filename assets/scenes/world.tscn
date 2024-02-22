@@ -94,6 +94,11 @@ shader = ExtResource("2_5jmin")
 line_spacing = 12.0
 font_size = 25
 
+[sub_resource type="LabelSettings" id="LabelSettings_4vst4"]
+font_size = 22
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1t3of"]
 shader = ExtResource("11_h3eho")
 shader_parameter/speed = -0.3
@@ -133,13 +138,8 @@ color = Color(0.847059, 0.843137, 0, 1)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jjxry"]
 size = Vector2(1143, 567)
 
-[sub_resource type="LabelSettings" id="LabelSettings_4vst4"]
-font_size = 22
-outline_size = 2
-outline_color = Color(0, 0, 0, 1)
-
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_n6a03"]
-properties/0/path = NodePath("TimerContainer/TimeLabel:text")
+properties/0/path = NodePath("../GameTime/TimerContainer/TimeLabel:text")
 properties/0/spawn = true
 properties/0/replication_mode = 2
 
@@ -400,6 +400,28 @@ vertical_alignment = 1
 
 [node name="Timer" type="Timer" parent="EndGameScreen/TimerContainer/TimeLabel"]
 
+[node name="GameTime" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="TimerContainer" type="VBoxContainer" parent="GameTime"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -53.5
+offset_right = 53.5
+offset_bottom = 50.0
+grow_horizontal = 2
+script = ExtResource("9_sop3o")
+
+[node name="TimeLabel" type="Label" parent="GameTime/TimerContainer"]
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_4vst4")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Timer" type="Timer" parent="GameTime/TimerContainer/TimeLabel"]
+
 [node name="Level" type="Node2D" parent="."]
 visible = false
 script = ExtResource("10_dyfoe")
@@ -475,25 +497,6 @@ process_material = SubResource("ParticleProcessMaterial_7yxj3")
 position = Vector2(644.5, 353.5)
 shape = SubResource("RectangleShape2D_jjxry")
 
-[node name="TimerContainer" type="VBoxContainer" parent="Level"]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = 522.5
-offset_right = 629.5
-offset_bottom = 50.0
-grow_horizontal = 2
-script = ExtResource("9_sop3o")
-
-[node name="TimeLabel" type="Label" parent="Level/TimerContainer"]
-layout_mode = 2
-text = "0"
-label_settings = SubResource("LabelSettings_4vst4")
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Timer" type="Timer" parent="Level/TimerContainer/TimeLabel"]
-
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="Level"]
 replication_config = SubResource("SceneReplicationConfig_n6a03")
 
@@ -519,5 +522,5 @@ position = Vector2(272, 453)
 [connection signal="button_down" from="MainMenu/MainMenu/MarginContainer/VBoxContainer/JoinButton" to="." method="_on_join_button_button_down"]
 [connection signal="timeout" from="DeathScreen/TimerContainer/TimeLabel/Timer" to="DeathScreen/TimerContainer" method="_on_timer_timeout" flags=3]
 [connection signal="timeout" from="EndGameScreen/TimerContainer/TimeLabel/Timer" to="EndGameScreen/TimerContainer" method="_on_timer_timeout" flags=3]
-[connection signal="end_game" from="Level/TimerContainer" to="." method="_on_timer_container_end_game"]
-[connection signal="timeout" from="Level/TimerContainer/TimeLabel/Timer" to="Level/TimerContainer" method="_on_timer_timeout" flags=3]
+[connection signal="end_game" from="GameTime/TimerContainer" to="." method="_on_timer_container_end_game"]
+[connection signal="timeout" from="GameTime/TimerContainer/TimeLabel/Timer" to="GameTime/TimerContainer" method="_on_timer_timeout" flags=3]
