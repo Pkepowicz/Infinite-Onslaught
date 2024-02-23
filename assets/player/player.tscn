@@ -21,16 +21,16 @@ properties/1/spawn = true
 properties/1/replication_mode = 2
 properties/2/path = NodePath("PlayerInput:mouse_position")
 properties/2/spawn = true
-properties/2/replication_mode = 1
+properties/2/replication_mode = 2
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_g3wg3"]
 properties/0/path = NodePath("HitBox:hp")
 properties/0/spawn = true
-properties/0/replication_mode = 1
-properties/1/path = NodePath(".:position")
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:sync_pos")
 properties/1/spawn = true
 properties/1/replication_mode = 1
-properties/2/path = NodePath("GunRotation:rotation")
+properties/2/path = NodePath(".:sync_rot")
 properties/2/spawn = true
 properties/2/replication_mode = 1
 
@@ -141,6 +141,7 @@ replication_config = SubResource("SceneReplicationConfig_oak8o")
 script = ExtResource("6_smt8m")
 
 [node name="ServerSync" type="MultiplayerSynchronizer" parent="."]
+replication_interval = 0.03
 replication_config = SubResource("SceneReplicationConfig_g3wg3")
 
 [node name="HitBox" parent="." instance=ExtResource("4_661v0")]

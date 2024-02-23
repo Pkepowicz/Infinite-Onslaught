@@ -171,6 +171,7 @@ func create_player(peer_id):
 	player.name = str(peer_id)
 	var pos = level.get_spawn()
 	player.global_position = pos
+	player.sync_pos = pos
 	add_child(player)
 	sync_player_position.rpc_id(peer_id, pos)
 

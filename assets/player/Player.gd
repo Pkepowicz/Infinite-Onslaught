@@ -13,15 +13,14 @@ var username : String
 @onready var animator = $AnimationPlayer
 @onready var bleed_particles = preload("res://assets/Utils/particles/bleed_particles.tscn")
 
-var sync_pos = Vector2(0,0)
-var sync_rot = 0
+@export var sync_pos = Vector2(0,0)
+@export var sync_rot = 0
 
 var last_velocity : Vector2 = Vector2.ZERO
 @export var basic_bullet : PackedScene
 @onready var bullet = basic_bullet
 @export var flash_color : Color
 @export var flash_timeout : float
-@export var vel : Vector2
 @onready var input = $PlayerInput
 
 
@@ -29,7 +28,6 @@ func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())
 
 func _ready():
-	set_physics_process(multiplayer.is_server())
 	$ServerSync.set_multiplayer_authority(1)
 	$HitBox.set_multiplayer_authority(1)
 	if multiplayer.get_unique_id() == str(name).to_int():
@@ -40,10 +38,11 @@ func update_label():
 	$Username.text = username
 	
 func _physics_process(delta):
-	#if not is_multiplayer_authority():
-		#global_position = global_position.lerp(sync_pos, 0.4)
-		#$GunRotation.rotation_degrees = lerpf($GunRotation.rotation_degrees, sync_rot, 0.4)
-		#return
+	if not multiplayer.is_server():
+		global_position = global_position.lerp(sync_pos, 0.3)
+		$GunRotation.rotation_degrees = lerpf($GunRotation.rotation_degrees, sync_rot, 0.3)
+		return
+	
 	$GunRotation.look_at(input.mouse_position)
 	if input.shooting && attack_cooldown.is_stopped():
 		attack_cooldown.start()
@@ -54,8 +53,8 @@ func _physics_process(delta):
 	#if Input.is_action_just_pressed("SpecialButton"):
 		#get_parent().send_Shockwave(get_global_position())
 	
-	#sync_pos = global_position
-	#sync_rot = $GunRotation.rotation_degrees
+	sync_pos = global_position
+	sync_rot = $GunRotation.rotation_degrees
 
 	var direction = (Vector2(input.direction.x, input.direction.y)).normalized()
 	if direction:
