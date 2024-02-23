@@ -141,7 +141,6 @@ replication_config = SubResource("SceneReplicationConfig_oak8o")
 script = ExtResource("6_smt8m")
 
 [node name="ServerSync" type="MultiplayerSynchronizer" parent="."]
-replication_interval = 0.03
 replication_config = SubResource("SceneReplicationConfig_g3wg3")
 
 [node name="HitBox" parent="." instance=ExtResource("4_661v0")]

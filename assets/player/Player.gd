@@ -32,6 +32,8 @@ func _ready():
 	$HitBox.set_multiplayer_authority(1)
 	if multiplayer.get_unique_id() == str(name).to_int():
 		$Camera2D.make_current()
+	global_position = sync_pos
+	$GunRotation.rotation_degrees = sync_rot
 	
 func update_label():
 	username = get_parent().player_info[str(name).to_int()].username
