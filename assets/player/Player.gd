@@ -17,6 +17,8 @@ var username : String
 @export var sync_rot = 0
 
 var last_velocity : Vector2 = Vector2.ZERO
+@export var is_upgraded_bullet : bool = false
+@onready var upgraded_bullet : PackedScene = preload("res://assets/player/weapons/SuckingProjetile/sucking_bullet.tscn")
 @export var basic_bullet : PackedScene
 @onready var bullet = basic_bullet
 @export var flash_color : Color
@@ -71,15 +73,19 @@ func _physics_process(delta):
 
 @rpc("any_peer", "call_local")
 func Fire():
-	var b = bullet.instantiate()
+	var b
+	if not is_upgraded_bullet:
+		b = bullet.instantiate()
+	else:
+		b = upgraded_bullet.instantiate()
 	b.parent = self
 	b.global_position = $GunRotation/BulletSpawn.global_position
 	b.rotation_degrees = $GunRotation.rotation_degrees
 	get_tree().root.add_child(b)
-	bullet = basic_bullet
+	is_upgraded_bullet = false
 	
 func set_bullet(obj: PackedScene):
-	bullet = obj
+	is_upgraded_bullet = true
 
 # only on server
 func _on_hit_box_update_color_signal(clr, after_hit):
