@@ -6,7 +6,7 @@ extends Node2D
 
 @export var hp: int
 var parent: Node
-var immune: bool = false
+@export var immune: bool = false
 var lava_immune : bool = true
 var last_hit
 
