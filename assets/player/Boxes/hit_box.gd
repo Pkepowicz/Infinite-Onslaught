@@ -1,12 +1,13 @@
 extends Node2D
 
-@export var max_hp: int = 5
+@export var max_hp: int = 8
 @onready var collision = $Area2D/CollisionShape2D
-@onready var bleed_particles = preload("res://assets/Utils/particles/bleed_particles.tscn")
+
 
 @export var hp: int
 var parent: Node
-var immune: bool = false
+@export var immune: bool = false
+var lava_immune : bool = true
 var last_hit
 
 signal update_color_signal(clr: Color)
@@ -28,8 +29,23 @@ func _ready():
 	parent = get_parent()
 	update_color(false)
 
+func _physics_process(delta):
+	if not multiplayer.is_server():
+		return
+		
+	var overlapping_areas = $PlayerCenter.get_overlapping_areas()
+	for area in overlapping_areas:
+		if area.is_in_group("Ground"):
+			return
+	if not lava_immune:
+		var dmg: Damage = Damage.new()
+		dmg.dmg = 1
+		take_damage(dmg)
+		lava_immune = true
+		$PlayerCenter/Lava_Timer.start()
+
 func take_damage(dmg: Damage):	
-	if immune:
+	if immune || not multiplayer.is_server():
 		return
 	hp -= dmg.dmg
 	var knockback_coefficient = (float(max_hp - hp) / max_hp)
@@ -39,10 +55,6 @@ func take_damage(dmg: Damage):
 	
 	collision.call_deferred("set", "disabled", true)
 	$Timer.start()
-	
-	var p = bleed_particles.instantiate()
-	p.global_position = global_position
-	get_tree().root.add_child(p)
 	
 	if knockback != Vector2.ZERO:
 		get_knocked_back.emit(knockback)
@@ -54,3 +66,6 @@ func take_damage(dmg: Damage):
 
 func _on_timer_timeout() -> void:
 	collision.call_deferred("set", "disabled", false)
+
+func _on_lava_timer_timeout():
+	lava_immune = false

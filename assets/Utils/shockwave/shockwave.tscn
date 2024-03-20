@@ -1,0 +1,76 @@
+[gd_scene load_steps=9 format=3 uid="uid://0rf6qjby1f3c"]
+
+[ext_resource type="Shader" path="res://assets/Utils/shockwave/distortion.gdshader" id="1_jlewc"]
+[ext_resource type="Texture2D" uid="uid://c4two7ckobbve" path="res://assets/icon.svg" id="2_ucvq4"]
+[ext_resource type="Script" path="res://assets/Utils/shockwave/shockwave.gd" id="3_b1kp3"]
+
+[sub_resource type="Curve" id="Curve_rph7y"]
+min_value = -1.0
+_data = [Vector2(0, -0.120879), 0.0, 0.0, 0, 0, Vector2(0.145251, -0.450549), 0.0, 0.0, 0, 0, Vector2(0.324022, 0.494506), 0.0, 0.0, 0, 0, Vector2(0.50838, -0.010989), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_u5j5f"]
+curve = SubResource("Curve_rph7y")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3hesr"]
+shader = ExtResource("1_jlewc")
+shader_parameter/strength = -0.044
+shader_parameter/curve = SubResource("CurveTexture_u5j5f")
+
+[sub_resource type="Animation" id="Animation_mw005"]
+resource_name = "shockwave"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(3, 3), Vector2(1e-05, 1e-05)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [3.14159, 0.0]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"end"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lblee"]
+_data = {
+"shockwave": SubResource("Animation_mw005")
+}
+
+[node name="Sprite2D" type="Sprite2D"]
+material = SubResource("ShaderMaterial_3hesr")
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("2_ucvq4")
+script = ExtResource("3_b1kp3")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_lblee")
+}

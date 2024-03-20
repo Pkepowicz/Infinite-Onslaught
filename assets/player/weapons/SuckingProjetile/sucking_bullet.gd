@@ -23,7 +23,7 @@ func _process(delta: float) -> void:
 	for object in overlapping_objects:
 		if object.is_in_group("Player_hitbox") and object.get_parent().get_parent() != parent:
 			var dir_vector = -position.direction_to(object.global_position).normalized()
-			object.get_parent().get_parent().velocity += dir_vector * 290
+			object.get_parent().get_parent().velocity += dir_vector * 200
 	
 	
 func delete_on_timer(seconds):

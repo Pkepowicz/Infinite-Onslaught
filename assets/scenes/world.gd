@@ -6,13 +6,13 @@ extends Node2D
 @export var game_length : int
 @export var game_break_lenght : int
 @export var player_respawn_time : int
-@onready var Shockwave = $CanvasLayer/ColorRect
+const Shockwave = preload("res://assets/Utils/shockwave/shockwave.tscn")
 
 const Player = preload("res://assets/player/player.tscn")
 const PORT = 2456
 var is_dedicated_server = false
 var is_game_over : bool
-var peer = WebSocketMultiplayerPeer.new()
+var peer = ENetMultiplayerPeer.new()
 var player_info = {}
 var late_player = []
 
@@ -29,22 +29,23 @@ func _process(delta):
 func host_server():
 	$MainMenu.hide()
 	level.show()
+	$GameTime.show()
 	
-	if '--server' in OS.get_cmdline_args():
+	#if '--server' in OS.get_cmdline_args():
 		#var server_certs = load("res://assets/Keys/server.crt")
 		#var server_key = load("res://assets/Keys/server.key")
 		#var server_tls_options = TLSOptions.server(server_key, server_certs)
 		#peer.create_server(PORT, "*", server_tls_options)
-		peer.create_server(PORT)
-	else:
-		peer.create_server(PORT)
-	
+		##peer.create_server(PORT)
+	#else:
+		#peer.create_server(PORT)
+	peer.create_server(PORT)
 	multiplayer.multiplayer_peer = peer
 	multiplayer.peer_connected.connect(add_player)
 	multiplayer.peer_disconnected.connect(remove_player)
 	is_game_over = false
 	$Level/PoweupSpawnPoints.start_spawning()
-	$Level/TimerContainer.start_countdown(game_length)
+	$GameTime/TimerContainer.start_countdown(game_length)
 	print("Waiting for players!")
 
 func _on_join_button_button_down():
@@ -55,8 +56,9 @@ func _on_join_button_button_down():
 	
 	var is_connected = false
 	#var client_trusted_cas = load("res://assets/Keys/server.crt")
-	#var client_tls_options = TLSOptions.client(client_trusted_cas)
-	var error = peer.create_client(address_entry.text + ":" + str(PORT))
+	#var client_tls_options = TLSOptions.client_unsafe(client_trusted_cas)
+	#var error = peer.create_client("wss://" + address_entry.text + ":" + str(PORT))
+	var error = peer.create_client(address_entry.text, PORT)
 	multiplayer.multiplayer_peer = peer
 	# Checking errors during socket creation
 	if error != OK && error != ERR_ALREADY_IN_USE:
@@ -73,10 +75,11 @@ func _on_join_button_button_down():
 			multiplayer.multiplayer_peer = peer
 			$MainMenu.hide()
 			level.show()
+			$GameTime.show()
 		else:
 			connection_error("Connection timed out")
 	
-func is_connection_estabilished(peer : WebSocketMultiplayerPeer):
+func is_connection_estabilished(peer : ENetMultiplayerPeer):
 	print(peer.get_connection_status())
 	if peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED:
 		return true
@@ -168,6 +171,7 @@ func create_player(peer_id):
 	player.name = str(peer_id)
 	var pos = level.get_spawn()
 	player.global_position = pos
+	player.sync_pos = pos
 	add_child(player)
 	sync_player_position.rpc_id(peer_id, pos)
 
@@ -223,7 +227,7 @@ func restart_game():
 			hide_starting_screen.rpc_id(player_id)
 			respawn_player(player_id, 0, false)
 		late_player.erase(player_id)
-	$Level/TimerContainer.start_countdown(game_length)
+	$GameTime/TimerContainer.start_countdown(game_length)
 
 # Hosting server locally, mainly for debug purpose
 func _on_host_button_button_down():
@@ -244,5 +248,6 @@ func comparePlayers(a, b):
 	return true
 
 func send_Shockwave(position):
-	Shockwave.material.set_shader_parameter("global_position", position)
-	Shockwave.get_node("AnimationPlayer").play("Shockwave")
+	var new_shockwave = Shockwave.instantiate()
+	new_shockwave.position = position
+	add_child(new_shockwave)

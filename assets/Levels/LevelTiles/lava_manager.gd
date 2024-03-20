@@ -10,9 +10,6 @@ func _ready() -> void:
 		queue_free()
 		return
 	instance = self
-	
-
-
 
 func add_tile_to_array(tile: LavaTile) -> void:
 	tiles.append(tile)
